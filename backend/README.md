@@ -1,10 +1,10 @@
-# Second Act — live graph-backed inventory
+# SecondAct — live graph-backed inventory
 
 This backend connects to FalkorDB Cloud, serves the website on localhost, and answers live resource-search requests. It uses the official FalkorDB Node.js client and Node's built-in HTTP server.
 
 ## Your local setup
 
-The private `backend/.env` file in the Desktop project folder is pre-filled with the Cloud connection address supplied in chat. It is not included in the browser preview or committed source. Add your **database password** to its empty `FALKORDB_PASSWORD` value. Keep this file private.
+Create a private `backend/.env` from `.env.example` and supply your own database endpoint, database password and Gemini key. Keep this file private.
 
 The matching public setup template is `.env.example`. The `.gitignore` files exclude `.env`, dependencies and logs from source control. Never copy the private `.env` into the publicly served preview folder.
 
@@ -25,7 +25,7 @@ For a fresh checkout, install the locked dependencies with `npm ci --ignore-scri
 - `FALKORDB_URL`: the connection address from FalkorDB Cloud, including the username and port.
 - `FALKORDB_PASSWORD`: the database password; separate from the address.
 - `FALKORDB_TLS=auto`: follows the URL protocol. `falkor://` and `redis://` use plain TCP; `falkors://` and `rediss://` use TLS. Set `true` if the dashboard explicitly supplies a TLS connection. The checker never silently falls back to an unencrypted connection and never disables certificate checks.
-- `FALKORDB_GRAPH=second_act`: the graph name to use when building the inventory later. The checker does not create it.
+- `FALKORDB_GRAPH=second_act`: the graph name used for the inventory. The connection checker does not create it.
 
 ## Run the website
 
@@ -36,7 +36,7 @@ npm run seed
 npm start
 ```
 
-Open http://127.0.0.1:4318/. Keep only one preview/server process running on that port. The new backend uses the same address as the original frontend preview, preserving the browser's local profiles and briefs. It serves an explicit allowlist of frontend files and image/font assets. Private settings, backend source, installed dependencies and directory listings are not served.
+Open http://127.0.0.1:4318/. Keep only one preview/server process running on that port. Profiles and saved briefs are stored under the website origin in this browser. It serves an explicit allowlist of frontend files and image/font assets. Private settings, backend source, installed dependencies and directory listings are not served.
 
 The seeder uses `MERGE` and stable `second-act-demo-v1:` IDs. It updates only its own fictional sample records and never deletes existing data. Rerunning it does not duplicate the inventory. All sample names, clubs, equipment and bookings are fictional. It does not upload the user's profile or project text.
 
@@ -72,7 +72,7 @@ Official Node.js client: https://github.com/FalkorDB/falkordb-ts
 
 ## Creative planner
 
-Add `GEMINI_API_KEY` to the private `.env`. `GEMINI_MODEL` defaults to `gemini-3.1-flash-lite`, which successfully generated a test response with this project's key. The project was observed as Free tier in AI Studio. Free model access and quotas depend on Google's current account limits; this code does not enable billing or fall back to a paid provider. Google documents its free tier at https://ai.google.dev/gemini-api/docs/billing and model pricing at https://ai.google.dev/gemini-api/docs/pricing.
+Add `GEMINI_API_KEY` to the private `.env`. `GEMINI_MODEL` selects the model available to your API project. The fashion demo was verified with `gemini-3.5-flash-lite`; provider availability and quota can change. Keep the key on the server.
 
 `POST /api/plan` accepts `discipline`, `title`, `vision`, `resources`, `start`, optional `end` and optional `budget` (INR; zero is preserved). Briefs are limited in size, dates to 30 days, agent rounds to six, and tool calls to twelve. The local server limits concurrent generation and requests per minute. These are demo safeguards, not public authentication or a complete production abuse-control system.
 

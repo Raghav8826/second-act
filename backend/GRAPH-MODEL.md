@@ -1,4 +1,4 @@
-# Second Act demo graph
+# SecondAct demo graph
 
 Graph name: `second_act`, unless changed in private configuration.
 Dataset namespace: `second-act-demo-v1`.

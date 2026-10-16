@@ -26,7 +26,7 @@ try{
   const result=await graph.roQuery('MATCH (r:Resource {dataset:$dataset}) RETURN count(r) AS resources',{params:{dataset:DATASET}});
   if(result.data[0]?.resources!==10)throw new Error('Unexpected resource count');
   console.log('Demo graph ready: 10 resources, 4 clubs, 4 disciplines, materials, creative uses, 3 bookings and a camera/lens dependency.');
-  console.log('Only the Second Act demo namespace was updated. No existing records were deleted.');
+  console.log('Only the SecondAct demo namespace was updated. No existing records were deleted.');
 }catch{
   console.error('The demo graph could not be prepared. Check the database connection and the seeding code.');
   process.exitCode=1;

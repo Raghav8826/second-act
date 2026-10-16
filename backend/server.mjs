@@ -74,5 +74,5 @@ const server=http.createServer(async(req,res)=>{
   }
 });
 server.on('error',()=>{console.error('The local server could not open its port. Check that another preview is not already running.');database.close().finally(()=>process.exit(1))});
-server.listen(port,'127.0.0.1',()=>console.log(`Second Act: http://127.0.0.1:${port} — connected to FalkorDB`));
+server.listen(port,'127.0.0.1',()=>console.log(`SecondAct: http://127.0.0.1:${port} — connected to FalkorDB`));
 for(const signal of ['SIGINT','SIGTERM'])process.on(signal,()=>server.close(()=>database.close().finally(()=>process.exit(0))));
