@@ -62,7 +62,7 @@ function selectDiscipline(value){
   $('#status-description').textContent=d.description;
   $('#profile-discipline').textContent=`Your world: ${d.label}.`;
   document.querySelectorAll('.selection-mark').forEach(mark=>{mark.textContent=mark.closest('label').querySelector('input').checked?'✓':'↗'});
-  storage.set('second-act.discipline',value);
+
 }
 function populateBrief(){
   const d=disciplines[selected];
@@ -197,8 +197,11 @@ document.addEventListener('keydown',event=>{
   if(event.key==='Enter'&&selected&&!/BUTTON|A/.test(document.activeElement.tagName)){event.preventDefault();showScreen('brief')}
 });
 
-const restored=storage.get('second-act.discipline');
-if(disciplines[restored])selectDiscipline(restored);
+// A new visit starts with a deliberate choice; profiles and creative drafts still persist.
+storage.remove('second-act.discipline');
+const clearInitialChoice=()=>document.querySelectorAll('input[name="discipline"]').forEach(input=>{input.checked=false});
+clearInitialChoice();
+window.addEventListener('pageshow',event=>{if(!event.persisted&&!selected)clearInitialChoice()});
 activeScreen=profile?'selection':'profile';
 for(const target of ['profile','selection','brief'])$(`#${target}-screen`).hidden=target!==activeScreen;
 prepareProfile();
