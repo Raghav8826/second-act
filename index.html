@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#000000">
+  <meta name="description" content="Big ideas. Whatever you've got. Find your creative starting point with Second Act.">
+  <title>Find your thing — Second Act</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="intro-active">
+  <div id="opening-intro" role="region" aria-label="Second Act opening animation">
+    <button id="intro-start" type="button" aria-label="Click anywhere to begin"><span class="intro-start-copy"><span class="intro-start-pill">CLICK ANYWHERE <span aria-hidden="true">↗</span></span><span class="intro-start-hint">TO START SOMETHING.</span></span></button>
+    <button id="intro-skip" class="intro-skip" type="button" aria-label="Skip intro">SKIP <span aria-hidden="true">↗</span></button>
+  </div>
+  <noscript><style>#opening-intro{display:none!important}.intro-active .page-shell{visibility:visible!important}.intro-active .discipline{opacity:1!important;transform:none!important}</style><p class="no-script-note">Enable JavaScript to play the opening animation and choose a creative discipline.</p></noscript>
+  <div class="page-shell" inert aria-hidden="true">
+    <header class="masthead">
+      <a class="wordmark" href="./" aria-label="Second Act home">second act<span class="logo-star" aria-hidden="true">✳</span></a>
+      <span class="masthead-note">A LITTLE RESOURCEFUL.<br>A LOT OF POSSIBILITY.</span>
+      <div class="header-actions">
+        <button class="about-link animated-link" id="about-open">THE IDEA <svg class="animated-arrow" aria-hidden="true" viewBox="0 0 10 10" fill="none"><path d="M1.004 9.166 9.337.833m0 0v8.333m0-8.333H1.004" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <button class="profile" id="profile-toggle" aria-label="Open your profile" aria-expanded="false" aria-controls="profile-menu" hidden><span class="avatar-art" id="header-avatar" data-avatar="yellow" aria-hidden="true"></span><span class="profile-dot"></span></button>
+        <div class="profile-menu" id="profile-menu" hidden>
+          <span class="eyebrow">YOUR CREATIVE CORNER</span>
+          <strong id="profile-greeting">Hey, artist.</strong>
+          <p id="profile-discipline">Your next act starts here.</p>
+          <button id="edit-profile">Edit profile <span aria-hidden="true">↗</span></button>
+          <button id="reset-selection">Reset my selection <span aria-hidden="true">↗</span></button>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <p id="app-notice" class="app-notice" role="status" hidden></p>
+      <section id="profile-screen" aria-labelledby="profile-title">
+        <div class="intro-row"><span class="eyebrow"><i class="live-dot"></i> BEFORE THE BIG IDEA, THERE’S YOU.</span><span class="edition">YOUR CREATIVE IDENTITY / 01</span></div>
+        <div class="profile-layout">
+          <div class="profile-copy"><h1 id="profile-title" aria-label="First, make it you.">FIRST,<br> MAKE IT<br> <span>YOU.</span><sup aria-hidden="true">✳</sup></h1><p>Every good story starts with a character.<br>This one’s you.</p><div class="profile-steps"><span class="current">01 / YOUR PROFILE</span><span>02 / YOUR WORLD</span><span>03 / YOUR NEXT ACT</span></div></div>
+          <form id="profile-form" class="identity-card">
+            <div class="identity-topline"><span>ONE OF A KIND. JUST LIKE YOUR IDEAS.</span><span aria-hidden="true">↗</span></div>
+            <div class="portrait-wrap"><span class="avatar-art profile-portrait" id="draft-avatar" data-avatar="yellow" role="img" aria-label="Yellow pop-art portrait"></span><button id="avatar-change" type="button">CHANGE <span aria-hidden="true">↗</span></button></div>
+            <p class="portrait-caption">A LITTLE COLOUR. A LOT OF CHARACTER.</p>
+            <label for="profile-name">WHAT SHOULD WE CALL YOU?</label><input id="profile-name" name="displayName" autocomplete="nickname" maxlength="40" placeholder="Your name" required aria-describedby="profile-name-error"><p id="profile-name-error" class="field-error" role="alert"></p>
+            <button class="profile-submit" id="profile-submit" type="submit"><span id="profile-submit-label">MAKE MY ENTRANCE</span><span aria-hidden="true">↗</span></button><button id="profile-cancel" class="profile-cancel" type="button" hidden>← BACK WITHOUT CHANGES</button>
+            <p class="profile-local-note">Your name. Your look. Saved on this device.</p>
+          </form>
+        </div>
+      </section>
+      <section id="selection-screen" hidden aria-labelledby="selection-title">
+        <div class="intro-row"><span class="eyebrow"><i class="live-dot"></i><span id="welcome-line">YOUR NEXT ACT STARTS HERE</span></span><span class="edition">VOL. 01 / THE CREATIVE TYPES</span></div>
+        <div class="hero-copy"><h1 id="selection-title">WHAT’S YOUR <span>THING?</span><sup>✳</sup></h1><p>Big ideas. Whatever you’ve got.<br>Pick your world. Let’s make something.</p></div>
+        <fieldset class="disciplines"><legend class="sr-only">Choose your creative discipline</legend>
+          <label class="discipline film" style="--accent:#ff4051;--secondary:#ffe333;--tilt:-4deg">
+            <input type="radio" name="discipline" value="filmmaker">
+            <span class="card-head"><span>01 / FRAME THE WORLD</span><span class="selection-mark" aria-hidden="true">↗</span></span>
+            <span class="artwork"><img src="assets/filmmaker_pop_v3.png" alt="Red, yellow and blue pop-art movie camera" fetchpriority="high"><span class="art-star" aria-hidden="true">✳</span><span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span></span>
+            <span class="card-label animated-link">FILMMAKER<svg class="label-arrow animated-arrow" aria-hidden="true" viewBox="0 0 10 10" fill="none"><path d="M1.004 9.166 9.337.833m0 0v8.333m0-8.333H1.004" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <span class="card-description">For the stories that need to be seen.</span>
+            <span class="card-tags">CAMERAS / PROPS / LOCATIONS</span>
+          </label>
+          <label class="discipline stage" style="--accent:#75c6ff;--secondary:#ff4051;--tilt:4deg">
+            <input type="radio" name="discipline" value="theatre">
+            <span class="card-head"><span>02 / TAKE THE STAGE</span><span class="selection-mark" aria-hidden="true">↗</span></span>
+            <span class="artwork"><img src="assets/theatre_pop_v3.png" alt="Red, white and blue pop-art comedy and tragedy masks"><span class="art-star" aria-hidden="true">✳</span><span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span></span>
+            <span class="card-label animated-link">THEATRE<svg class="label-arrow animated-arrow" aria-hidden="true" viewBox="0 0 10 10" fill="none"><path d="M1.004 9.166 9.337.833m0 0v8.333m0-8.333H1.004" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <span class="card-description">For the magic that happens live.</span>
+            <span class="card-tags">SETS / COSTUMES / LIGHTING</span>
+          </label>
+          <label class="discipline photo" style="--accent:#08c6cf;--secondary:#3f6eff;--tilt:-4deg">
+            <input type="radio" name="discipline" value="photography">
+            <span class="card-head"><span>03 / SEE IT DIFFERENTLY</span><span class="selection-mark" aria-hidden="true">↗</span></span>
+            <span class="artwork"><img src="assets/photography_pop_v3.png" alt="Teal, cobalt and cream pop-art photo camera"><span class="art-star" aria-hidden="true">✳</span><span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span></span>
+            <span class="card-label animated-link">PHOTOGRAPHY<svg class="label-arrow animated-arrow" aria-hidden="true" viewBox="0 0 10 10" fill="none"><path d="M1.004 9.166 9.337.833m0 0v8.333m0-8.333H1.004" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <span class="card-description">For the moments only you notice.</span>
+            <span class="card-tags">GEAR / BACKDROPS / STUDIOS</span>
+          </label>
+          <label class="discipline fashion" style="--accent:#ff4596;--secondary:#14cec5;--tilt:4deg">
+            <input type="radio" name="discipline" value="fashion">
+            <span class="card-head"><span>04 / CUT YOUR OWN CLOTH</span><span class="selection-mark" aria-hidden="true">↗</span></span>
+            <span class="artwork"><img src="assets/fashion_pop_v3.png" alt="Pink, turquoise and yellow pop-art dress form with tailoring scissors"><span class="art-star" aria-hidden="true">✳</span><span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span></span>
+            <span class="card-label fashion-label animated-link">FASHION <span class="designer">DESIGNER</span><svg class="label-arrow animated-arrow" aria-hidden="true" viewBox="0 0 10 10" fill="none"><path d="M1.004 9.166 9.337.833m0 0v8.333m0-8.333H1.004" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <span class="card-description">For the ideas you want to wear.</span>
+            <span class="card-tags">FABRIC / TOOLS / TRIMS</span>
+          </label>
+        </fieldset>
+        <div class="next-row"><div class="selection-status" aria-live="polite"><span class="status-spark" aria-hidden="true">✳</span><div><strong id="status-title">EVERY GREAT THING STARTS SOMEWHERE.</strong><span id="status-description">Choose a creative world to get going.</span></div></div><button class="continue-button" id="continue-button" disabled>LET’S MAKE IT HAPPEN <span aria-hidden="true">↗</span></button></div>
+        <div class="keyboard-note">PICK WITH YOUR MOUSE. OR PRESS <kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd> <kbd>4</kbd> <span>THEN <kbd>ENTER ↵</kbd></span></div>
+      </section>
+
+      <section id="brief-screen" hidden aria-labelledby="brief-title">
+        <button class="back-button" id="back-button">← BACK TO YOUR WORLD</button>
+        <div class="brief-grid"><div class="brief-heading"><span class="eyebrow" id="brief-category">01 / FILMMAKER</span><h1 id="brief-title">GIVE YOUR<br>IDEA A <span>START.</span></h1><p>You bring the vision.<br>We’ll start with what you’ve got.</p><img id="brief-art" src="assets/filmmaker_pop_v3.png" alt=""></div>
+        <form id="brief-form"><label for="project-title">WHAT ARE WE MAKING?</label><input id="project-title" name="title" placeholder="Give your project a name" maxlength="100" required><label for="project-vision">TELL US THE VISION</label><textarea id="project-vision" name="vision" rows="4" placeholder="The idea you can’t stop thinking about…" required></textarea><label for="project-resources">WHAT DO YOU ALREADY HAVE?</label><textarea id="project-resources" name="resources" rows="2" placeholder="A phone, leftover fabric, two friends, a brilliant idea…"></textarea><div class="form-pair"><div><label for="project-budget">YOUR BUDGET (₹)</label><input id="project-budget" name="budget" type="number" min="0" step="1" placeholder="1500"></div><div><label for="project-date">WHEN DO YOU NEED IT?</label><input id="project-date" name="date" type="date"></div></div><div class="plan-end-field"><label for="project-end-date">UNTIL WHEN? (OPTIONAL)</label><input id="project-end-date" name="endDate" type="date"><p class="plan-small">Leave blank for a one-day project.</p></div><button id="generate-plan" class="generate-plan" type="button">MAKE MY CREATIVE PLAN ↗</button><p class="plan-small">Gemini reads this brief and searches the fictional resource inventory. Your profile is not sent.</p><button class="save-button" type="submit">SAVE MY STARTING POINT <span aria-hidden="true">↗</span></button><p class="form-note">Your brief saves on this device. Plans check shared inventory but do not reserve it.</p><p id="save-status" class="save-status" role="status"></p></form></div>
+        <section class="creative-plan-panel" aria-label="Your creative plan"><div class="plan-prompt-row"><span class="eyebrow"><i class="live-dot"></i> YOUR VISION / A WAY TO MAKE IT</span><button id="plan-demo" type="button">TRY A ₹500 PORTRAIT BRIEF ↗</button></div><p id="plan-status" class="plan-status" role="status" aria-live="polite">Your idea + available resources = a practical starting point.</p><div id="plan-results" hidden></div></section>
+        <section class="resource-panel" aria-labelledby="resource-title">
+          <div class="resource-panel-heading"><div><span class="eyebrow"><i class="live-dot"></i> FICTIONAL CAMPUS / LIVE AVAILABILITY</span><h2 id="resource-title">MAKE MORE.<br><span>WITH WHAT’S HERE.</span></h2></div><p>Find resources for your creative world.<br>Check the dates, cost and borrowing rules.</p></div>
+          <form id="resource-search-form" class="resource-filters"><div><label for="resource-purpose">WHAT DO YOU NEED?</label><select id="resource-purpose" name="purpose" required></select></div><div><label for="resource-start">FROM</label><input id="resource-start" name="start" type="date" required></div><div><label for="resource-end">UNTIL</label><input id="resource-end" name="end" type="date" required></div><div><label for="resource-quantity">QUANTITY</label><input id="resource-quantity" name="quantity" type="number" min="1" max="99" step="1" value="1" required></div><button type="submit" id="resource-search-button">FIND RESOURCES <span aria-hidden="true">↗</span></button></form>
+          <div class="resource-helper"><button id="resource-demo-dates" type="button">TRY THE BACKDROP DEMO <span aria-hidden="true">↗</span></button><span>Uses October 25–27, 2026 to show a booked item and available replacements.</span></div>
+          <p class="resource-cost-note">Each card shows the cost for that item and quantity across your dates, including any required equipment. Your project budget above filters the cost of each result.</p>
+          <p id="resource-status" class="resource-status" role="status">Pick what you need and your dates to explore the shared inventory.</p><button id="resource-clear-alternative" class="resource-clear" type="button" hidden>← SHOW ALL MATCHES</button>
+          <ul id="resource-results" class="resource-results" aria-label="Matching shared resources"></ul>
+        </section>
+      </section>
+    </main>
+
+    <footer><span>LESS STUFF. MORE POSSIBILITY.</span><span class="footer-middle">MADE FOR THE BEAUTIFULLY RESOURCEFUL.</span><span>SECOND ACT © <span id="year">2026</span> <i class="footer-dot"></i></span></footer>
+  </div>
+  <dialog id="avatar-dialog" aria-labelledby="avatar-dialog-title"><button class="dialog-close" id="avatar-close" type="button" aria-label="Close portrait choices">×</button><span class="eyebrow">SAME CHARACTER. DIFFERENT ENERGY.</span><h2 id="avatar-dialog-title">PICK YOUR<br><span>ALTER EGO.</span></h2><fieldset class="avatar-options"><legend class="sr-only">Choose a portrait colour</legend>
+    <label class="avatar-option"><input type="radio" name="avatar" value="blue" aria-label="Blue portrait"><span class="avatar-art" data-avatar="blue" aria-hidden="true"></span><span class="avatar-option-name">BLUE</span><span class="avatar-tick" aria-hidden="true">✓</span></label>
+    <label class="avatar-option"><input type="radio" name="avatar" value="red" aria-label="Red portrait"><span class="avatar-art" data-avatar="red" aria-hidden="true"></span><span class="avatar-option-name">RED</span><span class="avatar-tick" aria-hidden="true">✓</span></label>
+    <label class="avatar-option"><input type="radio" name="avatar" value="green" aria-label="Green portrait"><span class="avatar-art" data-avatar="green" aria-hidden="true"></span><span class="avatar-option-name">GREEN</span><span class="avatar-tick" aria-hidden="true">✓</span></label>
+    <label class="avatar-option"><input type="radio" name="avatar" value="yellow" aria-label="Yellow portrait" checked><span class="avatar-art" data-avatar="yellow" aria-hidden="true"></span><span class="avatar-option-name">YELLOW</span><span class="avatar-tick" aria-hidden="true">✓</span></label>
+    <label class="avatar-option"><input type="radio" name="avatar" value="orange" aria-label="Orange portrait"><span class="avatar-art" data-avatar="orange" aria-hidden="true"></span><span class="avatar-option-name">ORANGE</span><span class="avatar-tick" aria-hidden="true">✓</span></label>
+    <label class="avatar-option"><input type="radio" name="avatar" value="cyan" aria-label="Cyan portrait"><span class="avatar-art" data-avatar="cyan" aria-hidden="true"></span><span class="avatar-option-name">CYAN</span><span class="avatar-tick" aria-hidden="true">✓</span></label>
+    </fieldset><button id="avatar-apply" class="profile-submit" type="button">THAT’S ME <span aria-hidden="true">↗</span></button></dialog>
+  <dialog id="about-dialog"><button class="dialog-close" id="about-close" aria-label="Close">×</button><span class="eyebrow">THE IDEA / SECOND ACT</span><h2>BIG IDEAS.<br>SMALL BUDGETS.<br><span>SECOND ACTS.</span></h2><p>Tell us what you want to create and what you already have. Second Act is a place to turn that starting point into a practical plan, using materials and equipment your creative community can share.</p><p class="dialog-note">Profiles and briefs save on this device. When you make a plan, your brief is sent to Gemini and resources are checked against fictional inventory in FalkorDB. No real booking is created. Caret and link interactions adapted from <a href="https://skiper-ui.com/" target="_blank" rel="noreferrer">Skiper UI</a>.</p></dialog>
+  <div class="transition-panel" id="transition-panel" aria-hidden="true"><span>MAKE SOMETHING.</span></div>
+  <script src="intro-engine.js"></script>
+  <script src="app.js"></script>
+  <script src="planner.js"></script>
+  <script src="intro.js"></script>
+  <script src="interactions.js"></script>
+</body>
+</html>
+
