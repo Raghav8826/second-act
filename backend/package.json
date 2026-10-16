@@ -1,0 +1,22 @@
+{
+  "name": "second-act-backend",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Second Act backend — FalkorDB connection foundation",
+  "engines": {
+    "node": ">=22.9.0"
+  },
+  "scripts": {
+    "check:db": "node --env-file-if-exists=.env check-connection.mjs",
+    "check:ai": "node --env-file-if-exists=.env check-ai.mjs",
+    "check:planner": "node --env-file-if-exists=.env check-planner.mjs",
+    "seed": "node --env-file-if-exists=.env seed.mjs",
+    "check:inventory": "node --env-file-if-exists=.env check-inventory.mjs",
+    "start": "node --env-file-if-exists=.env server.mjs",
+    "test": "node --test availability.test.mjs planner.test.mjs"
+  },
+  "dependencies": {
+    "falkordb": "6.8.0"
+  }
+}
