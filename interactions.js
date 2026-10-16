@@ -80,9 +80,21 @@
     Object.assign(mirror.style,{width:multiline?`${active.clientWidth}px`:'max-content',whiteSpace:multiline?'pre-wrap':'pre',overflowWrap:multiline?'break-word':'normal',wordBreak:style.wordBreak});
     mirror.replaceChildren(document.createTextNode(before),marker,document.createTextNode(after||' '));
     const fontSize=parseFloat(style.fontSize),lineHeight=parseFloat(style.lineHeight)||fontSize*1.4,height=fontSize*.95;
+    const paddingLeft=parseFloat(style.paddingLeft)||0,paddingRight=parseFloat(style.paddingRight)||0;
+    // A transparent native caret does not consistently trigger browser scrolling
+    // after restoring/filling long values. Keep its measured position in view.
+    if(!multiline){
+      const absolute=marker.offsetLeft,maxScroll=Math.max(0,active.scrollWidth-active.clientWidth);
+      if(absolute>active.scrollLeft+active.clientWidth-paddingRight)active.scrollLeft=Math.min(maxScroll,absolute-active.clientWidth+paddingRight+1);
+      else if(absolute<active.scrollLeft+paddingLeft)active.scrollLeft=Math.max(0,absolute-paddingLeft);
+    }else{
+      const paddingTop=parseFloat(style.paddingTop)||0,paddingBottom=parseFloat(style.paddingBottom)||0;
+      const maxScroll=Math.max(0,active.scrollHeight-active.clientHeight);
+      if(marker.offsetTop+lineHeight>active.scrollTop+active.clientHeight-paddingBottom)active.scrollTop=Math.min(maxScroll,marker.offsetTop+lineHeight-active.clientHeight+paddingBottom);
+      else if(marker.offsetTop<active.scrollTop+paddingTop)active.scrollTop=Math.max(0,marker.offsetTop-paddingTop);
+    }
     const left=marker.offsetLeft+active.clientLeft-active.scrollLeft;
     const top=multiline?marker.offsetTop+active.clientTop-active.scrollTop+(lineHeight-height)/2:(rect.height-height)/2;
-    const paddingLeft=parseFloat(style.paddingLeft)||0,paddingRight=parseFloat(style.paddingRight)||0;
     if(left<paddingLeft-2||left>active.clientWidth-paddingRight+2||top<active.clientTop-1||top+height>active.clientHeight+active.clientTop+1||rect.bottom<0||rect.top>innerHeight){caret.hidden=true;return}
     targetX=rect.left+left;targetY=rect.top+top;
     active.classList.add('smooth-input-active');caret.style.height=`${height}px`;caret.hidden=false;
