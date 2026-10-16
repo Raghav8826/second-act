@@ -11,7 +11,7 @@
     document.body.classList.remove('intro-active','intro-revealing');document.documentElement.style.overflow=overflow;
     page.inert=false;page.removeAttribute('aria-hidden');
     const heading=document.querySelector('main > section:not([hidden]) h1');
-    if(heading){heading.setAttribute('tabindex','-1');heading.focus({preventScroll:true});heading.addEventListener('blur',()=>heading.removeAttribute('tabindex'),{once:true})}
+    if(heading){window.getSelection()?.removeAllRanges();heading.setAttribute('tabindex','-1');heading.classList.add('screen-focus-target');heading.focus({preventScroll:true});heading.addEventListener('blur',()=>{heading.removeAttribute('tabindex');heading.classList.remove('screen-focus-target')},{once:true})}
   }
   function reveal(immediate=false){
     if(complete)return;complete=true;skip.hidden=true;

@@ -125,3 +125,32 @@
   setInterval(()=>{if(active&&!caret.hidden&&performance.now()-lastActivity>800)caret.classList.add('is-idle')},400);
   if(eligible(document.activeElement)){active=document.activeElement;observer.observe(active);schedule(true)}
 })();
+
+/* Move only the two reel faces; the film-camera body stays still. */
+(()=>{
+  'use strict';
+  const reduced=matchMedia('(prefers-reduced-motion: reduce)');
+  const timers=new WeakMap();
+  const cards=new Map();
+  for(const input of document.querySelectorAll('input[name="discipline"]')){
+    const card=input.closest('label');card.dataset.world=input.value;cards.set(input.value,card);
+    input.addEventListener('click',()=>play(input.value));
+  }
+  const film=cards.get('filmmaker'),image=film?.querySelector('.artwork>img');
+  if(image){
+    const overlay=document.createElementNS('http://www.w3.org/2000/svg','svg');
+    overlay.setAttribute('viewBox','0 0 1000 1000');overlay.setAttribute('class','reel-overlay');overlay.setAttribute('aria-hidden','true');
+    const reel=(id,cx,cy,rx,ry,angle,reverse)=>`<defs><clipPath id="${id}" clipPathUnits="userSpaceOnUse"><ellipse cx="${cx}" cy="${cy}" rx="${rx}" ry="${ry}" transform="rotate(${angle} ${cx} ${cy})"/></clipPath></defs><g clip-path="url(#${id})"><g transform="translate(${cx} ${cy}) rotate(${angle}) scale(${rx/ry} 1)"><g class="reel-turn${reverse?' reel-turn-reverse':''}"><image width="1000" height="1000" transform="scale(${ry/rx} 1) rotate(${-angle}) translate(${-cx} ${-cy})"/></g></g></g>`;
+    overlay.innerHTML=reel('film-reel-front',466,214,155,190,-13,false)+reel('film-reel-rear',801,275,124,167,-14,true);
+    overlay.querySelectorAll('image').forEach(layer=>layer.setAttribute('href',image.getAttribute('src')));
+    film.querySelector('.artwork').append(overlay);
+  }
+  function play(value){
+    const card=cards.get(value);if(!card||reduced.matches)return;
+    clearTimeout(timers.get(card));card.classList.remove('is-animating');
+    void card.offsetWidth;card.classList.add('is-animating');
+    timers.set(card,setTimeout(()=>card.classList.remove('is-animating'),1300));
+  }
+  window.playSelectionMotion=play;
+  reduced.addEventListener('change',()=>{if(reduced.matches)for(const card of cards.values()){clearTimeout(timers.get(card));card.classList.remove('is-animating')}});
+})();

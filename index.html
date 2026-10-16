@@ -4,19 +4,19 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#000000">
-  <meta name="description" content="Big ideas. Whatever you've got. Find your creative starting point with Second Act.">
-  <title>Second Act — Make your entrance</title>
+  <meta name="description" content="Big ideas. Whatever you've got. Find your creative starting point with SecondAct.">
+  <title>SecondAct — Make your entrance</title>
   <link rel="icon" type="image/svg+xml" href="assets/second-act-mark.svg?v=4">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body class="intro-active">
-  <div id="opening-intro" role="region" aria-label="Second Act curtain and spotlights opening">
+  <div id="opening-intro" role="region" aria-label="SecondAct curtain and spotlights opening">
     <button id="intro-skip" class="intro-skip" type="button" aria-label="Skip intro">SKIP <span aria-hidden="true">↗</span></button>
   </div>
   <noscript><style>#opening-intro{display:none!important}.intro-active .page-shell{visibility:visible!important}.intro-active .discipline{opacity:1!important;transform:none!important}</style><p class="no-script-note">Enable JavaScript to play the opening animation and choose a creative discipline.</p></noscript>
   <div class="page-shell" inert aria-hidden="true">
     <header class="masthead">
-      <a class="wordmark" href="./" aria-label="Second Act home"><img class="brand-symbol" src="assets/second-act-mark.svg" alt=""><span class="brand-name brand-type">second act</span></a>
+      <a class="wordmark" href="./" aria-label="SecondAct home"><img class="brand-symbol" src="assets/second-act-mark.svg" alt=""><span class="brand-name brand-type">SecondAct</span></a>
       <span class="masthead-note">A LITTLE RESOURCEFUL.<br>A LOT OF POSSIBILITY.</span>
       <div class="header-actions">
         <button class="about-link animated-link" id="about-open">THE IDEA <svg class="animated-arrow" aria-hidden="true" viewBox="0 0 10 10" fill="none"><path d="M1.004 9.166 9.337.833m0 0v8.333m0-8.333H1.004" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
@@ -27,6 +27,7 @@
           <p id="profile-discipline">Your next act starts here.</p>
           <button id="edit-profile">Edit profile <span aria-hidden="true">↗</span></button>
           <button id="reset-selection">Reset my selection <span aria-hidden="true">↗</span></button>
+          <button id="logout-profile">Log out <span aria-hidden="true">↗</span></button>
         </div>
       </div>
     </header>
@@ -53,35 +54,34 @@
         <fieldset class="disciplines"><legend class="sr-only">Choose your creative discipline</legend>
           <label class="discipline film" style="--accent:#ff4051;--secondary:#ffe333;--tilt:-4deg">
             <input type="radio" name="discipline" value="filmmaker">
-            <span class="card-head"><span>01 / FRAME THE WORLD</span><span class="selection-mark" aria-hidden="true">↗</span></span>
+            <span class="card-head"><span class="selection-mark" aria-hidden="true">↗</span></span>
             <span class="artwork"><img src="assets/filmmaker_pop_v3.png" alt="Red, yellow and blue pop-art movie camera" fetchpriority="high"><span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span></span>
             <span class="card-label"><span class="label-text animated-link">FILMMAKER</span><svg class="label-arrow animated-arrow" aria-hidden="true" viewBox="0 0 10 10" fill="none"><path d="M1.004 9.166 9.337.833m0 0v8.333m0-8.333H1.004" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
             <span class="card-tags">CAMERAS / PROPS / LOCATIONS</span>
           </label>
           <label class="discipline stage" style="--accent:#75c6ff;--secondary:#ff4051;--tilt:4deg">
             <input type="radio" name="discipline" value="theatre">
-            <span class="card-head"><span>02 / TAKE THE STAGE</span><span class="selection-mark" aria-hidden="true">↗</span></span>
+            <span class="card-head"><span class="selection-mark" aria-hidden="true">↗</span></span>
             <span class="artwork"><img src="assets/theatre_pop_v3.png" alt="Red, white and blue pop-art comedy and tragedy masks"><span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span></span>
             <span class="card-label"><span class="label-text animated-link">THEATRE</span><svg class="label-arrow animated-arrow" aria-hidden="true" viewBox="0 0 10 10" fill="none"><path d="M1.004 9.166 9.337.833m0 0v8.333m0-8.333H1.004" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
             <span class="card-tags">SETS / COSTUMES / LIGHTING</span>
           </label>
           <label class="discipline photo" style="--accent:#08c6cf;--secondary:#3f6eff;--tilt:-4deg">
             <input type="radio" name="discipline" value="photography">
-            <span class="card-head"><span>03 / SEE IT DIFFERENTLY</span><span class="selection-mark" aria-hidden="true">↗</span></span>
+            <span class="card-head"><span class="selection-mark" aria-hidden="true">↗</span></span>
             <span class="artwork"><img src="assets/photography_pop_v3.png" alt="Teal, cobalt and cream pop-art photo camera"><span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span></span>
             <span class="card-label"><span class="label-text animated-link">PHOTOGRAPHY</span><svg class="label-arrow animated-arrow" aria-hidden="true" viewBox="0 0 10 10" fill="none"><path d="M1.004 9.166 9.337.833m0 0v8.333m0-8.333H1.004" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
             <span class="card-tags">GEAR / BACKDROPS / STUDIOS</span>
           </label>
           <label class="discipline fashion" style="--accent:#ff4596;--secondary:#14cec5;--tilt:4deg">
             <input type="radio" name="discipline" value="fashion">
-            <span class="card-head"><span>04 / CUT YOUR OWN CLOTH</span><span class="selection-mark" aria-hidden="true">↗</span></span>
+            <span class="card-head"><span class="selection-mark" aria-hidden="true">↗</span></span>
             <span class="artwork"><img src="assets/fashion_pop_v3.png" alt="Pink, turquoise and yellow pop-art dress form with tailoring scissors"><span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span></span>
             <span class="card-label fashion-label"><span class="label-text animated-link">FASHION <span class="designer">DESIGNER</span></span><svg class="label-arrow animated-arrow" aria-hidden="true" viewBox="0 0 10 10" fill="none"><path d="M1.004 9.166 9.337.833m0 0v8.333m0-8.333H1.004" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
             <span class="card-tags">FABRIC / TOOLS / TRIMS</span>
           </label>
         </fieldset>
-        <div class="next-row"><div class="selection-status" aria-live="polite"><img class="status-spark" src="assets/second-act-mark.svg" alt="" aria-hidden="true"><div><strong id="status-title">EVERY GREAT THING STARTS SOMEWHERE.</strong><span id="status-description">Choose a creative world to get going.</span></div></div><button class="continue-button" id="continue-button" disabled>LET’S MAKE IT HAPPEN <span aria-hidden="true">↗</span></button></div>
-        <div class="keyboard-note">PICK WITH YOUR MOUSE. OR PRESS <kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd> <kbd>4</kbd> <span>THEN <kbd>ENTER ↵</kbd></span></div>
+        <div class="next-row"><div class="selection-status" aria-live="polite"><img class="status-spark" src="assets/second-act-mark.svg" alt="" aria-hidden="true"><div><strong id="status-title">EVERY GREAT THING STARTS SOMEWHERE.</strong><span id="status-description"></span></div></div><button class="continue-button" id="continue-button" disabled>LET’S MAKE IT HAPPEN <span aria-hidden="true">↗</span></button></div>
       </section>
 
       <section id="brief-screen" hidden aria-labelledby="brief-title">
@@ -100,7 +100,7 @@
       </section>
     </main>
 
-    <footer><span>LESS STUFF. MORE POSSIBILITY.</span><span class="footer-middle">MADE FOR THE BEAUTIFULLY RESOURCEFUL.</span><span>SECOND ACT © <span id="year">2026</span> <img class="footer-brand" src="assets/second-act-mark.svg" alt="" aria-hidden="true"></span></footer>
+    <footer><span>LESS STUFF. MORE POSSIBILITY.</span><span class="footer-middle">MADE FOR THE BEAUTIFULLY RESOURCEFUL.</span><span>SecondAct © <span id="year">2026</span> <img class="footer-brand" src="assets/second-act-mark.svg" alt="" aria-hidden="true"></span></footer>
   </div>
   <dialog id="avatar-dialog" aria-labelledby="avatar-dialog-title"><button class="dialog-close" id="avatar-close" type="button" aria-label="Close portrait choices">×</button><span class="eyebrow">SAME CHARACTER. DIFFERENT ENERGY.</span><h2 id="avatar-dialog-title">PICK YOUR<br><span>ALTER EGO.</span></h2><fieldset class="avatar-options"><legend class="sr-only">Choose a portrait colour</legend>
     <label class="avatar-option"><input type="radio" name="avatar" value="blue" aria-label="Blue portrait"><span class="avatar-art" data-avatar="blue" aria-hidden="true"></span><span class="avatar-option-name">BLUE</span><span class="avatar-tick" aria-hidden="true">✓</span></label>
@@ -110,7 +110,7 @@
     <label class="avatar-option"><input type="radio" name="avatar" value="orange" aria-label="Orange portrait"><span class="avatar-art" data-avatar="orange" aria-hidden="true"></span><span class="avatar-option-name">ORANGE</span><span class="avatar-tick" aria-hidden="true">✓</span></label>
     <label class="avatar-option"><input type="radio" name="avatar" value="cyan" aria-label="Cyan portrait"><span class="avatar-art" data-avatar="cyan" aria-hidden="true"></span><span class="avatar-option-name">CYAN</span><span class="avatar-tick" aria-hidden="true">✓</span></label>
     </fieldset><button id="avatar-apply" class="profile-submit" type="button">THAT’S ME <span aria-hidden="true">↗</span></button></dialog>
-  <dialog id="about-dialog"><button class="dialog-close" id="about-close" aria-label="Close">×</button><span class="eyebrow">THE IDEA / SECOND ACT</span><h2>BIG IDEAS.<br>SMALL BUDGETS.<br><span>SECOND ACTS.</span></h2><p>Tell us what you want to create and what you already have. Second Act is a place to turn that starting point into a practical plan, using materials and equipment your creative community can share.</p><p class="dialog-note">Profiles and briefs save on this device. When you make a plan, your brief is sent to Gemini and resources are checked against fictional inventory in FalkorDB. No real booking is created. Caret and link interactions adapted from <a href="https://skiper-ui.com/" target="_blank" rel="noreferrer">Skiper UI</a>.</p></dialog>
+  <dialog id="about-dialog"><button class="dialog-close" id="about-close" aria-label="Close">×</button><span class="eyebrow">THE IDEA / SecondAct</span><h2>BIG IDEAS.<br>SMALL BUDGETS.<br><span>SecondAct.</span></h2><p>Tell us what you want to create and what you already have. SecondAct is a place to turn that starting point into a practical plan, using materials and equipment your creative community can share.</p><p class="dialog-note">Profiles and briefs save on this device. When you make a plan, your brief is sent to Gemini and resources are checked against fictional inventory in FalkorDB. No real booking is created. Caret and link interactions adapted from <a href="https://skiper-ui.com/" target="_blank" rel="noreferrer">Skiper UI</a>.</p></dialog>
   <div class="transition-panel" id="transition-panel" aria-hidden="true"><span>MAKE SOMETHING.</span></div>
   <script src="intro-engine.js"></script>
   <script src="app.js"></script>

@@ -22,9 +22,11 @@ try{
 
 function focusHeading(screen){
   const heading=document.getElementById(screen==='brief'?'brief-title':screen==='profile'?'profile-title':'selection-title');
+  window.getSelection()?.removeAllRanges();
   heading.setAttribute('tabindex','-1');
+  heading.classList.add('screen-focus-target');
   heading.focus({preventScroll:true});
-  heading.addEventListener('blur',()=>heading.removeAttribute('tabindex'),{once:true});
+  heading.addEventListener('blur',()=>{heading.removeAttribute('tabindex');heading.classList.remove('screen-focus-target')},{once:true});
 }
 function closeProfileMenu(){
   $('#profile-menu').hidden=true;
@@ -53,6 +55,7 @@ function prepareProfile(){
 function selectDiscipline(value){
   if(!disciplines[value])return;
   selected=value;
+  window.playSelectionMotion?.(value);
   const d=disciplines[value];
   document.querySelector(`input[name="discipline"][value="${value}"]`).checked=true;
   $('.page-shell').classList.add('has-selection');
@@ -166,6 +169,12 @@ $('#profile-toggle').addEventListener('click',()=>{
   menu.hidden=!menu.hidden;
   $('#profile-toggle').setAttribute('aria-expanded',String(!menu.hidden));
 });
+$('#logout-profile').addEventListener('click',()=>{
+  closeProfileMenu();
+  storage.remove('second-act.profile');
+  storage.remove('second-act.discipline');
+  location.reload();
+});
 document.addEventListener('click',event=>{if(!event.target.closest('.header-actions'))closeProfileMenu()});
 $('#reset-selection').addEventListener('click',()=>{
   if(transitioning)return;
@@ -176,7 +185,7 @@ $('#reset-selection').addEventListener('click',()=>{
   document.documentElement.style.removeProperty('--accent');
   $('#continue-button').disabled=true;
   $('#status-title').textContent='EVERY GREAT THING STARTS SOMEWHERE.';
-  $('#status-description').textContent='Choose a creative world to get going.';
+  $('#status-description').textContent='';
   $('#profile-discipline').textContent='Your next act starts here.';
   closeProfileMenu();
   storage.remove('second-act.discipline');

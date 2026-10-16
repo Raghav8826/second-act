@@ -24,7 +24,7 @@ function renderPlan(plan){
   for(const [label,value] of [['VERIFIED RESOURCE COST',money(plan.totalCost)],['YOUR DATES',`${plan.start} → ${plan.end}`],['BUDGET LEFT FOR OTHER NEEDS',plan.budgetRemaining===null?'NOT SET':money(plan.budgetRemaining)]]){
     const stat=document.createElement('div');stat.append(resourceText('span','',label),resourceText('strong','',value));stats.append(stat);
   }
-  root.append(stats,resourceText('p','plan-disclosure','Fictional campus inventory · Resource facts and totals checked by Second Act · Creative suggestions by Gemini'));
+  root.append(stats,resourceText('p','plan-disclosure','Fictional campus inventory · Resource facts and totals checked by SecondAct · Creative suggestions by Gemini'));
   if(plan.resources.length){
     root.append(resourceText('h3','plan-section-label','YOUR RESOURCE LINEUP'));
     const cards=document.createElement('div');cards.className='plan-resources';
@@ -71,7 +71,7 @@ $('#generate-plan').addEventListener('click',async()=>{
   storage.set(`second-act.brief.${selected}`,JSON.stringify({...values,discipline:selected,savedAt:new Date().toISOString()}));
   try{
     const response=await fetch('/api/plan',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({discipline:selected,title:values.title,vision:values.vision,resources:values.resources,start,end,budget:values.budget}),signal:AbortSignal.any([controller.signal,AbortSignal.timeout(155000)])});
-    if(!response.headers.get('content-type')?.includes('application/json'))throw new Error('Open Second Act through the running backend to use the creative planner.');
+    if(!response.headers.get('content-type')?.includes('application/json'))throw new Error('Open SecondAct through the running backend to use the creative planner.');
     const result=await response.json();if(!response.ok)throw new Error(result.error||'The plan could not be completed.');
     if(planRequest===controller)renderPlan(result);
   }catch(error){if(planRequest===controller&&error.name!=='AbortError')$('#plan-status').textContent=error.name==='TimeoutError'?'The planner took too long. Your brief is saved; please try again.':error.message==='Failed to fetch'?'The planner could not be reached. Check that the backend is running.':error.message}
