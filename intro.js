@@ -1,86 +1,26 @@
-/* Hold the updated lips in the centre until a click, tap or keyboard activation. */
+/* Play the supplied curtain opening, then reveal the existing profile/menu flow. */
 (()=>{
   'use strict';
-  const host=document.getElementById('opening-intro');
-  const page=document.querySelector('.page-shell');
-  const startButton=document.getElementById('intro-start');
-  const skipButton=document.getElementById('intro-skip');
+  const host=document.getElementById('opening-intro'),page=document.querySelector('.page-shell'),skip=document.getElementById('intro-skip');
   if(!host||!page)return;
-  const motion=window.matchMedia('(prefers-reduced-motion: reduce)');
-  const initialOverflow=document.documentElement.style.overflow;
-  const theme=document.querySelector('meta[name="theme-color"]');
-  let animation=null,completed=false,started=false,cleanupTimer=null;
-
-  function onKey(event){
-    if(event.key==='Escape'){
-      event.preventDefault();
-      if(animation)animation.skip();
-      else reveal();
-    }
-  }
-
+  const motion=matchMedia('(prefers-reduced-motion: reduce)'),overflow=document.documentElement.style.overflow;
+  let animation,complete=false,timer;
+  document.documentElement.style.overflow='hidden';
   function cleanup(){
-    clearTimeout(cleanupTimer);
-    window.removeEventListener('keydown',onKey);
-    if(animation){animation.destroy();animation=null;}
-    host.remove();
-    document.body.classList.remove('intro-active','intro-revealing');
-    document.documentElement.style.overflow=initialOverflow;
-    if(theme)theme.content='#000000';
+    clearTimeout(timer);window.removeEventListener('keydown',onKey);animation?.destroy();host.remove();
+    document.body.classList.remove('intro-active','intro-revealing');document.documentElement.style.overflow=overflow;
     const heading=document.querySelector('main > section:not([hidden]) h1');
-    heading.setAttribute('tabindex','-1');
-    heading.focus({preventScroll:true});
-    heading.addEventListener('blur',()=>heading.removeAttribute('tabindex'),{once:true});
+    if(heading){heading.setAttribute('tabindex','-1');heading.focus({preventScroll:true});heading.addEventListener('blur',()=>heading.removeAttribute('tabindex'),{once:true})}
   }
-
   function reveal(){
-    if(completed)return;
-    completed=true;
-    host.dataset.state='revealing';
-    startButton.hidden=true;
-    skipButton.hidden=true;
-    host.style.background='#E52232';
-    if(theme)theme.content='#E52232';
-    page.inert=false;
-    page.removeAttribute('aria-hidden');
-    document.body.classList.remove('intro-active');
-    if(motion.matches){cleanup();return;}
-    host.setAttribute('aria-hidden','true');
-    document.body.classList.add('intro-revealing');
-    requestAnimationFrame(()=>requestAnimationFrame(()=>host.classList.add('is-leaving')));
-    cleanupTimer=setTimeout(cleanup,780);
+    if(complete)return;complete=true;skip.hidden=true;page.inert=false;page.removeAttribute('aria-hidden');document.body.classList.remove('intro-active');
+    if(motion.matches){cleanup();return}
+    host.setAttribute('aria-hidden','true');host.dataset.state='revealing';document.body.classList.add('intro-revealing');
+    requestAnimationFrame(()=>requestAnimationFrame(()=>host.classList.add('is-leaving')));timer=setTimeout(cleanup,780);
   }
-
-  function start(){
-    if(started||completed)return;
-    started=true;
-    host.dataset.state='playing';
-    startButton.disabled=true;
-    startButton.setAttribute('aria-hidden','true');
-    startButton.classList.add('is-started');
-    skipButton.focus({preventScroll:true});
-    animation.play();
-  }
-
-  if(typeof window.createSecondActIntro!=='function'){
-    page.inert=false;
-    page.removeAttribute('aria-hidden');
-    cleanup();
-    return;
-  }
+  function onKey(event){if(event.key==='Escape'){event.preventDefault();reveal()}}
   try{
-    animation=window.createSecondActIntro(host,{onComplete:reveal,manual:true,skippable:false,reducedMotion:motion.matches});
-    host.dataset.state='waiting';
-    const canvas=host.querySelector('canvas');
-    if(canvas)canvas.setAttribute('aria-hidden','true');
-    startButton.addEventListener('click',start);
-    skipButton.addEventListener('click',()=>animation.skip());
-    window.addEventListener('keydown',onKey);
-    startButton.focus({preventScroll:true});
-  }catch(error){
-    console.error('The opening animation could not play.',error);
-    page.inert=false;
-    page.removeAttribute('aria-hidden');
-    cleanup();
-  }
+    animation=window.createSecondActIntro(host,{onComplete:reveal,reducedMotion:motion.matches});
+    skip.addEventListener('click',reveal);window.addEventListener('keydown',onKey);host.dataset.state='playing';skip.focus({preventScroll:true});animation.play();
+  }catch(error){page.inert=false;page.removeAttribute('aria-hidden');cleanup();console.error('The opening animation could not play.')}
 })();

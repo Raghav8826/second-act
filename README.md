@@ -1,6 +1,6 @@
-# Second Act — choose your creative world
+# The Second Act — make your entrance
 
-A working, responsive creative onboarding flow and creative planner: click-to-start lips intro, local profile creation, four-discipline selection, a project brief, live FalkorDB resource search, and a Gemini agent that makes a plan using verified inventory. The current category artwork is the four `*_pop_v3.png` images supplied by the user. Unused artwork and preview screenshots have been removed.
+A working, responsive creative onboarding flow and creative planner: curtain-and-spotlights intro, local profile creation, four-discipline selection, a project brief, live FalkorDB resource search, and a Gemini agent that makes a plan using verified inventory. The current category artwork is the four `*_pop_v3.png` images supplied by the user. Unused artwork and preview screenshots have been removed.
 
 ## Open
 
@@ -17,8 +17,8 @@ Opening `index.html` directly previews the intro, local profile and brief. Live 
 
 ## Try it
 
-- The updated supplied lips remain still in the centre of the black screen until you click or tap anywhere, or activate the focused start button with Enter or Space. The kiss then plays, ending on a red frame that lifts to reveal profile setup on a first visit, or the selection menu for a saved profile. Use Skip or Escape at any point to go to the reveal. Reduced-motion preferences keep the same click-to-start screen, then bypass the animated film after activation.
-- On your first visit, the red reveal opens profile creation. The yellow portrait is selected by default. Click Change to choose from the six supplied portrait colours, enter your name, and make your entrance through a red transition.
+- The supplied red curtains open automatically, RGB spotlights move into an overlapping “2” mark, and the title appears before the profile or saved selection menu is revealed. Use Skip or Escape to continue immediately. Reduced-motion preferences bypass the choreography.
+- On your first visit, the stage reveal opens profile creation. The yellow portrait is selected by default. Click Change to choose from the six supplied portrait colours, enter your name, and make your entrance through a red transition.
 - The name and selected portrait are saved in this browser on this device. Subsequent visits open the selection menu after the intro. Use the top-right profile menu and Edit profile to change either detail. This is a local profile, not an online account.
 - Click a discipline or use keys 1–4.
 - Continue into a short, discipline-specific creative brief.
@@ -46,17 +46,11 @@ Choose Photography, continue to the brief and click **Try a ₹500 portrait brie
 - `app.js`: local profile creation and editing, avatar selection, screen transitions, local draft persistence, and keyboard shortcuts.
 - `planner.js`: submits the brief to the backend and renders the creative plan, cost breakdown, assumptions and graph evidence.
 - `interactions.js`: spring-following caret for text fields, multiline briefs and numeric entry. Native date pickers remain available. Numeric entry preserves minimum, maximum, whole-number validation and arrow-key stepping.
-- `intro-engine.js`: the standalone canvas engine extracted from the latest supplied JSX, adapted with an idle pose, centred composition and explicit playback control. Uses the latest almond-shaped pursed opening.
-- `intro.js`: mounts the idle lips and handles click-to-start, reveal, skip, cleanup, scroll restoration and keyboard focus.
+- `intro-engine.js`: the curtain and RGB spotlight choreography adapted from the supplied HTML.
+- `intro.js`: automatic playback, reveal, skip, cleanup, scroll restoration and keyboard focus.
 - `source/SecondActIntro.jsx`: the original supplied component, retained unchanged.
 - `source/SecondActIntro-v2.jsx`: the latest supplied component, retained unchanged.
-- `assets/`: only the four supplied v3 category images and the supplied six-portrait contact sheet. The portrait choices use CSS background positioning to display each cell without altering the supplied image. The opening lips are drawn by the canvas engine and need no image or video asset.
+- `assets/`: only the four supplied v3 category images and the supplied six-portrait contact sheet. The portrait choices use CSS background positioning to display each cell without altering the supplied image. The small SVG brand mark matches the opening spotlights; the intro uses CSS without a video download.
 - `ART-DIRECTION.md`: illustration prompts and provenance.
 
-The active category and profile images were supplied by the user and copied unchanged. Earlier unused category illustrations have been deleted; their historical prompts remain in the art-direction documents. The lips engine comes from the supplied JSX component.
-
-## Interaction credits and AI assistance
-
-The smooth caret and fourth animated-link effect (Link004, a rising white difference highlight with a rotating arrow) are adapted from user-supplied Skiper UI examples by @gurvinder-singh02. Credit: https://skiper-ui.com/. They were rewritten for the existing native HTML/CSS/JavaScript frontend without adding React, Next.js, DialKit or Framer Motion. Text selection, multiline wrapping, scrolling, keyboard interaction and reduced-motion preferences are supported.
-
-This project was developed with assistance from OpenAI Codex for implementation, debugging and verification. Product direction, visual references and the active artwork were supplied by the participant. Gemini is the application's runtime creative-planning model. The project uses fictional demo inventory; it has no real borrowing transactions, cloud accounts or production authentication yet.
+The active category and profile images were supplied by the user and copied unchanged. Earlier unused category illustrations have been deleted; their historical prompts remain in the art-direction documents. The active opening comes from the supplied curtain-and-spotlights HTML; the older JSX files are retained as historical source references.
