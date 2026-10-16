@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#000000">
   <meta name="description" content="Big ideas. Whatever you've got. Find your creative starting point with Second Act.">
   <title>Second Act — Make your entrance</title>
-  <link rel="icon" type="image/svg+xml" href="assets/second-act-mark.svg">
+  <link rel="icon" type="image/svg+xml" href="assets/second-act-mark.svg?v=4">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body class="intro-active">
@@ -16,7 +16,7 @@
   <noscript><style>#opening-intro{display:none!important}.intro-active .page-shell{visibility:visible!important}.intro-active .discipline{opacity:1!important;transform:none!important}</style><p class="no-script-note">Enable JavaScript to play the opening animation and choose a creative discipline.</p></noscript>
   <div class="page-shell" inert aria-hidden="true">
     <header class="masthead">
-      <a class="wordmark" href="./" aria-label="Second Act home"><img class="brand-symbol" src="assets/second-act-mark.svg" alt=""><span class="brand-name"><strong>SECOND ACT</strong></span></a>
+      <a class="wordmark" href="./" aria-label="Second Act home"><img class="brand-symbol" src="assets/second-act-mark.svg" alt=""><span class="brand-name brand-type">second act</span></a>
       <span class="masthead-note">A LITTLE RESOURCEFUL.<br>A LOT OF POSSIBILITY.</span>
       <div class="header-actions">
         <button class="about-link animated-link" id="about-open">THE IDEA <svg class="animated-arrow" aria-hidden="true" viewBox="0 0 10 10" fill="none"><path d="M1.004 9.166 9.337.833m0 0v8.333m0-8.333H1.004" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
@@ -36,7 +36,7 @@
       <section id="profile-screen" aria-labelledby="profile-title">
         <div class="intro-row"><span class="eyebrow"><i class="live-dot"></i> BEFORE THE BIG IDEA, THERE’S YOU.</span><span class="edition">YOUR CREATIVE IDENTITY / 01</span></div>
         <div class="profile-layout">
-          <div class="profile-copy"><h1 id="profile-title" aria-label="First, make it you.">FIRST,<br> MAKE IT<br> <span>YOU.</span><sup aria-hidden="true">✳</sup></h1><p>Every good story starts with a character.<br>This one’s you.</p><div class="profile-steps"><span class="current">01 / YOUR PROFILE</span><span>02 / YOUR WORLD</span><span>03 / YOUR NEXT ACT</span></div></div>
+          <div class="profile-copy"><h1 id="profile-title" aria-label="First, make it you.">FIRST,<br> MAKE IT<br> <span>YOU.</span><sup aria-hidden="true"><img class="inline-brand" src="assets/second-act-mark.svg" alt=""></sup></h1><p>Every good story starts with a character.<br>This one’s you.</p><div class="profile-steps"><span class="current">01 / YOUR PROFILE</span><span>02 / YOUR WORLD</span><span>03 / YOUR NEXT ACT</span></div></div>
           <form id="profile-form" class="identity-card">
             <div class="identity-topline"><span>ONE OF A KIND. JUST LIKE YOUR IDEAS.</span><span aria-hidden="true">↗</span></div>
             <div class="portrait-wrap"><span class="avatar-art profile-portrait" id="draft-avatar" data-avatar="yellow" role="img" aria-label="Yellow pop-art portrait"></span><button id="avatar-change" type="button">CHANGE <span aria-hidden="true">↗</span></button></div>
@@ -48,43 +48,39 @@
         </div>
       </section>
       <section id="selection-screen" hidden aria-labelledby="selection-title">
-        <div class="intro-row"><span class="eyebrow"><i class="live-dot"></i><span id="welcome-line">YOUR NEXT ACT STARTS HERE</span></span><span class="edition">VOL. 01 / THE CREATIVE TYPES</span></div>
-        <div class="hero-copy"><h1 id="selection-title">WHAT’S YOUR <span>THING?</span><sup>✳</sup></h1><p>Big ideas. Whatever you’ve got.<br>Pick your world. Let’s make something.</p></div>
+        <div class="intro-row"><span class="eyebrow"><i class="live-dot"></i><span id="welcome-line">YOUR NEXT ACT STARTS HERE</span></span></div>
+        <div class="hero-copy"><h1 id="selection-title" class="brand-type">WHAT’S YOUR <span>THING?</span><sup aria-hidden="true"><img class="inline-brand" src="assets/second-act-mark.svg" alt=""></sup></h1><p>Big ideas. Whatever you’ve got.<br>Pick your world. Let’s make something.</p></div>
         <fieldset class="disciplines"><legend class="sr-only">Choose your creative discipline</legend>
           <label class="discipline film" style="--accent:#ff4051;--secondary:#ffe333;--tilt:-4deg">
             <input type="radio" name="discipline" value="filmmaker">
             <span class="card-head"><span>01 / FRAME THE WORLD</span><span class="selection-mark" aria-hidden="true">↗</span></span>
-            <span class="artwork"><img src="assets/filmmaker_pop_v3.png" alt="Red, yellow and blue pop-art movie camera" fetchpriority="high"><span class="art-star" aria-hidden="true">✳</span><span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span></span>
+            <span class="artwork"><img src="assets/filmmaker_pop_v3.png" alt="Red, yellow and blue pop-art movie camera" fetchpriority="high"><span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span></span>
             <span class="card-label"><span class="label-text animated-link">FILMMAKER</span><svg class="label-arrow animated-arrow" aria-hidden="true" viewBox="0 0 10 10" fill="none"><path d="M1.004 9.166 9.337.833m0 0v8.333m0-8.333H1.004" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-            <span class="card-description">For the stories that need to be seen.</span>
             <span class="card-tags">CAMERAS / PROPS / LOCATIONS</span>
           </label>
           <label class="discipline stage" style="--accent:#75c6ff;--secondary:#ff4051;--tilt:4deg">
             <input type="radio" name="discipline" value="theatre">
             <span class="card-head"><span>02 / TAKE THE STAGE</span><span class="selection-mark" aria-hidden="true">↗</span></span>
-            <span class="artwork"><img src="assets/theatre_pop_v3.png" alt="Red, white and blue pop-art comedy and tragedy masks"><span class="art-star" aria-hidden="true">✳</span><span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span></span>
+            <span class="artwork"><img src="assets/theatre_pop_v3.png" alt="Red, white and blue pop-art comedy and tragedy masks"><span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span></span>
             <span class="card-label"><span class="label-text animated-link">THEATRE</span><svg class="label-arrow animated-arrow" aria-hidden="true" viewBox="0 0 10 10" fill="none"><path d="M1.004 9.166 9.337.833m0 0v8.333m0-8.333H1.004" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-            <span class="card-description">For the magic that happens live.</span>
             <span class="card-tags">SETS / COSTUMES / LIGHTING</span>
           </label>
           <label class="discipline photo" style="--accent:#08c6cf;--secondary:#3f6eff;--tilt:-4deg">
             <input type="radio" name="discipline" value="photography">
             <span class="card-head"><span>03 / SEE IT DIFFERENTLY</span><span class="selection-mark" aria-hidden="true">↗</span></span>
-            <span class="artwork"><img src="assets/photography_pop_v3.png" alt="Teal, cobalt and cream pop-art photo camera"><span class="art-star" aria-hidden="true">✳</span><span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span></span>
+            <span class="artwork"><img src="assets/photography_pop_v3.png" alt="Teal, cobalt and cream pop-art photo camera"><span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span></span>
             <span class="card-label"><span class="label-text animated-link">PHOTOGRAPHY</span><svg class="label-arrow animated-arrow" aria-hidden="true" viewBox="0 0 10 10" fill="none"><path d="M1.004 9.166 9.337.833m0 0v8.333m0-8.333H1.004" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-            <span class="card-description">For the moments only you notice.</span>
             <span class="card-tags">GEAR / BACKDROPS / STUDIOS</span>
           </label>
           <label class="discipline fashion" style="--accent:#ff4596;--secondary:#14cec5;--tilt:4deg">
             <input type="radio" name="discipline" value="fashion">
             <span class="card-head"><span>04 / CUT YOUR OWN CLOTH</span><span class="selection-mark" aria-hidden="true">↗</span></span>
-            <span class="artwork"><img src="assets/fashion_pop_v3.png" alt="Pink, turquoise and yellow pop-art dress form with tailoring scissors"><span class="art-star" aria-hidden="true">✳</span><span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span></span>
+            <span class="artwork"><img src="assets/fashion_pop_v3.png" alt="Pink, turquoise and yellow pop-art dress form with tailoring scissors"><span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span></span>
             <span class="card-label fashion-label"><span class="label-text animated-link">FASHION <span class="designer">DESIGNER</span></span><svg class="label-arrow animated-arrow" aria-hidden="true" viewBox="0 0 10 10" fill="none"><path d="M1.004 9.166 9.337.833m0 0v8.333m0-8.333H1.004" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-            <span class="card-description">For the ideas you want to wear.</span>
             <span class="card-tags">FABRIC / TOOLS / TRIMS</span>
           </label>
         </fieldset>
-        <div class="next-row"><div class="selection-status" aria-live="polite"><span class="status-spark" aria-hidden="true">✳</span><div><strong id="status-title">EVERY GREAT THING STARTS SOMEWHERE.</strong><span id="status-description">Choose a creative world to get going.</span></div></div><button class="continue-button" id="continue-button" disabled>LET’S MAKE IT HAPPEN <span aria-hidden="true">↗</span></button></div>
+        <div class="next-row"><div class="selection-status" aria-live="polite"><img class="status-spark" src="assets/second-act-mark.svg" alt="" aria-hidden="true"><div><strong id="status-title">EVERY GREAT THING STARTS SOMEWHERE.</strong><span id="status-description">Choose a creative world to get going.</span></div></div><button class="continue-button" id="continue-button" disabled>LET’S MAKE IT HAPPEN <span aria-hidden="true">↗</span></button></div>
         <div class="keyboard-note">PICK WITH YOUR MOUSE. OR PRESS <kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd> <kbd>4</kbd> <span>THEN <kbd>ENTER ↵</kbd></span></div>
       </section>
 
@@ -104,7 +100,7 @@
       </section>
     </main>
 
-    <footer><span>LESS STUFF. MORE POSSIBILITY.</span><span class="footer-middle">MADE FOR THE BEAUTIFULLY RESOURCEFUL.</span><span>SECOND ACT © <span id="year">2026</span> <i class="footer-dot"></i></span></footer>
+    <footer><span>LESS STUFF. MORE POSSIBILITY.</span><span class="footer-middle">MADE FOR THE BEAUTIFULLY RESOURCEFUL.</span><span>SECOND ACT © <span id="year">2026</span> <img class="footer-brand" src="assets/second-act-mark.svg" alt="" aria-hidden="true"></span></footer>
   </div>
   <dialog id="avatar-dialog" aria-labelledby="avatar-dialog-title"><button class="dialog-close" id="avatar-close" type="button" aria-label="Close portrait choices">×</button><span class="eyebrow">SAME CHARACTER. DIFFERENT ENERGY.</span><h2 id="avatar-dialog-title">PICK YOUR<br><span>ALTER EGO.</span></h2><fieldset class="avatar-options"><legend class="sr-only">Choose a portrait colour</legend>
     <label class="avatar-option"><input type="radio" name="avatar" value="blue" aria-label="Blue portrait"><span class="avatar-art" data-avatar="blue" aria-hidden="true"></span><span class="avatar-option-name">BLUE</span><span class="avatar-tick" aria-hidden="true">✓</span></label>
