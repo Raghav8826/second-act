@@ -2,7 +2,11 @@ const ALLOWED_PROTOCOLS = new Set(['falkor:', 'falkors:', 'redis:', 'rediss:']);
 
 export class ConfigurationError extends Error {}
 
-export function loadDatabaseConfig(env = process.env) {
+// Retry only the long-running server connection; commands are never queued
+// during an outage. CLI checks still fail promptly instead of hanging.
+export const reconnectDelay = retries => Math.min(250 * 2 ** Math.min(retries, 5), 5000);
+
+export function loadDatabaseConfig(env = process.env, {recover = false} = {}) {
   const address = env.FALKORDB_URL?.trim();
   if (!address) throw new ConfigurationError('Add FALKORDB_URL to backend/.env first.');
   let endpoint;
@@ -32,7 +36,8 @@ export function loadDatabaseConfig(env = process.env) {
     connection: {
       username,
       password,
-      socket: { host: endpoint.hostname, port, tls, connectTimeout: 10000, reconnectStrategy: false },
+      socket: { host: endpoint.hostname, port, tls, connectTimeout: 10000, reconnectStrategy: recover ? reconnectDelay : false },
+      ...(recover ? {pingInterval: 30000} : {}),
       disableOfflineQueue: true
     }
   };

@@ -1,0 +1,12 @@
+import {mkdir,copyFile,cp,writeFile} from 'node:fs/promises';
+import path from 'node:path';
+import {fileURLToPath} from 'node:url';
+const root=fileURLToPath(new URL('./',import.meta.url));const source=process.env.SECOND_ACT_SOURCE||fileURLToPath(new URL('../../',import.meta.url));const output=path.join(root,'site');
+await mkdir(output,{recursive:true});
+for(const name of ['index.html','styles.css','app.js','planner.js','intro-engine.js','intro.js','interactions.js'])await copyFile(path.join(source,name),path.join(output,name));
+await cp(path.join(source,'assets'),path.join(output,'assets'),{recursive:true});
+await copyFile(path.join(root,'proxy.mjs'),path.join(output,'_worker.js'));
+await copyFile(path.join(root,'routes.json'),path.join(output,'_routes.json'));
+await copyFile(path.join(root,'headers.txt'),path.join(output,'_headers'));
+await writeFile(path.join(output,'404.html'),'<!doctype html><html lang="en"><meta charset="utf-8"><title>SecondAct — Page not found</title><body style="background:#000;color:#fff;font-family:Arial,sans-serif;padding:3rem"><h1>Page not found.</h1><a href="/" style="color:#ffdf00">Back to SecondAct</a></body></html>');
+console.log('Public frontend prepared. No backend source, service keys, AWS credentials or recordings included.');

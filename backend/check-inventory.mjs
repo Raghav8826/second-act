@@ -2,7 +2,8 @@ import assert from 'node:assert/strict';
 import {connectDatabase,installSafeFatalHandler} from './database.mjs';
 import {parseSearch,InputError} from './availability.mjs';
 import {searchResources} from './search.mjs';
-import {DATASET,prefix} from './demo-data.mjs';
+import {inspectTechniques} from './techniques.mjs';
+import {DATASET,prefix,resources} from './demo-data.mjs';
 installSafeFatalHandler();
 let database;
 try{
@@ -29,8 +30,18 @@ try{
   assert.equal(stock.matches.find(r=>r.id===prefix('resource:light-stand'))?.available,false);
   await assert.rejects(()=>search({purpose:'unsupported-purpose'}),InputError);
   const count=await graph.roQuery('MATCH (r:Resource {dataset:$dataset}) RETURN count(r) AS resources',{params:{dataset:DATASET}});
-  assert.equal(count.data[0].resources,10);
-  console.log('Live graph checks passed: backdrop availability, connected alternatives, zero-budget filtering, required-lens availability and pricing, stock quantities, validation and 10 demo resources.');
+  assert.equal(count.data[0].resources,resources.length);
+  const brief={discipline:'fashion',start:'2026-10-25',end:'2026-10-27',budget:2000};
+  const methods=await inspectTechniques(graph,brief);
+  const method=(result,key)=>result.techniques.find(t=>t.id===prefix('technique:'+key));
+  assert.equal(method(methods,'machine-applique')?.available,false);
+  assert.equal(method(methods,'embroidery')?.available,false);
+  assert.equal(method(methods,'hand-applique')?.available,true);
+  assert(method(methods,'hand-applique').needs.flatMap(n=>n.rejected).some(r=>r.id===blue.id&&r.reason.includes('does not permit')));
+  const laterMethods=await inspectTechniques(graph,{...brief,start:'2026-10-28',end:'2026-10-30'});
+  assert.equal(method(laterMethods,'machine-applique')?.available,true);
+  assert.equal(method(laterMethods,'embroidery')?.available,true);
+  console.log('Live graph checks passed: backdrop availability, connected alternatives, zero-budget filtering, required-lens availability and pricing, stock quantities, validation and 35 demo resources. Technique checks passed: booked embroidery/machine methods blocked, hand sewing available, cutting restrictions enforced, dates restore methods.');
 }catch(error){
   console.error(error instanceof assert.AssertionError?error.message:'Live inventory verification failed. Check the graph query implementation and database connection.');
   process.exitCode=1;

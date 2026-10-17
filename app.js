@@ -82,7 +82,7 @@ function populateBrief(){
   }}
   configureResourceSearch();
 }
-async function showScreen(screen,{message='MAKE SOMETHING.',color='',preserveBrief=false}={}){
+async function showScreen(screen,{message='MAKE SOMETHING.',color='',preserveBrief=false,animate=true}={}){
   if(transitioning)return;
   if(screen!=='profile'&&!profile)screen='profile';
   if(screen==='brief'&&!selected)screen='selection';
@@ -90,7 +90,7 @@ async function showScreen(screen,{message='MAKE SOMETHING.',color='',preserveBri
   closeProfileMenu();
   const page=$('.page-shell');
   const panel=$('#transition-panel');
-  const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const reduced=!animate||matchMedia('(prefers-reduced-motion: reduce)').matches;
   const wait=ms=>new Promise(resolve=>setTimeout(resolve,ms));
   page.inert=true;
   try{
@@ -158,6 +158,18 @@ $('#profile-cancel').addEventListener('click',()=>{
 document.querySelectorAll('input[name="discipline"]').forEach(input=>input.addEventListener('change',()=>selectDiscipline(input.value)));
 $('#continue-button').addEventListener('click',()=>{if(selected)showScreen('brief')});
 $('#back-button').addEventListener('click',()=>showScreen('selection'));
+$('.wordmark').addEventListener('click',event=>{
+  if(event.button!==0||event.ctrlKey||event.metaKey||event.shiftKey||event.altKey)return;
+  event.preventDefault();
+  if(transitioning)return;
+  if(activeScreen==='brief'){
+    const values=Object.fromEntries(new FormData($('#brief-form')));
+    storage.set(`second-act.brief.${selected}`,JSON.stringify({...values,discipline:selected,savedAt:new Date().toISOString()}));
+  }
+  if(typeof resetPlanner==='function')resetPlanner();
+  resourceRequest?.abort();
+  showScreen(profile?'selection':'profile',{animate:false});
+});
 $('#brief-form').addEventListener('submit',event=>{
   event.preventDefault();
   const values=Object.fromEntries(new FormData(event.currentTarget));
@@ -262,13 +274,15 @@ async function searchLiveResources(sourceId=''){
   if(resourceRequest)resourceRequest.abort();
   const controller=new AbortController();resourceRequest=controller;
   const button=$('#resource-search-button');button.disabled=true;button.textContent='CHECKING INVENTORY…';
-  $('#resource-results').replaceChildren();$('#resource-status').textContent='Checking the shared inventory and bookings…';
+  const previousResults=$('#resource-results').children.length>0;
+  $('#resource-results').setAttribute('aria-busy','true');
+  $('#resource-status').textContent=previousResults?'Checking again. Previous results remain below and may use different filters.':'Checking the shared inventory and bookings…';
   $('#resource-clear-alternative').hidden=!sourceId;
   const query=new URLSearchParams({discipline:selected,purpose:$('#resource-purpose').value,start:$('#resource-start').value,end:$('#resource-end').value,quantity:$('#resource-quantity').value,includeUnavailable:sourceId?'false':'true'});
   if($('#project-budget').value!=='')query.set('budget',$('#project-budget').value);
   if(sourceId)query.set('sourceId',sourceId);
   try{
-    const response=await fetch(`/api/resources?${query}`,{signal:controller.signal});
+    const response=await fetch(`/api/resources?${query}`,{signal:AbortSignal.any([controller.signal,AbortSignal.timeout(35000)])});
     const type=response.headers.get('content-type')||'';
     if(!type.includes('application/json'))throw new Error('Open this website through the running backend to search the inventory.');
     const result=await response.json();
@@ -277,9 +291,9 @@ async function searchLiveResources(sourceId=''){
     renderResources(result);
     if(sourceId)$('#resource-status').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'});
   }catch(error){
-    if(error.name!=='AbortError'&&controller===resourceRequest)$('#resource-status').textContent=error.message==='Failed to fetch'?'The shared inventory could not be reached. Check that the backend is running.':error.message;
+    if(error.name!=='AbortError'&&controller===resourceRequest)$('#resource-status').textContent=(error.name==='TimeoutError'?'The inventory check took too long. Try again in a moment.':error.message==='Failed to fetch'?'The shared inventory could not be reached. Check your connection and try again.':error.message)+(previousResults?' Previous results remain below and have not been refreshed; they may use different filters.':'');
   }finally{
-    if(controller===resourceRequest){button.disabled=false;button.textContent='FIND RESOURCES ';const arrow=document.createElement('span');arrow.textContent='↗';arrow.setAttribute('aria-hidden','true');button.append(arrow);}
+    if(controller===resourceRequest){$('#resource-results').removeAttribute('aria-busy');button.disabled=false;button.textContent='FIND RESOURCES ';const arrow=document.createElement('span');arrow.textContent='↗';arrow.setAttribute('aria-hidden','true');button.append(arrow);}
   }
 }
 $('#resource-search-form').addEventListener('submit',event=>{event.preventDefault();searchLiveResources()});

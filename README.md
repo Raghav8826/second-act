@@ -2,6 +2,12 @@
 
 A pop-art creative planning app for artists working with limited resources. Choose filmmaking, theatre, photography or fashion design; describe an idea, materials, budget and dates; then get a Gemini plan grounded in a live FalkorDB inventory.
 
+## Live website
+
+https://secondact.pages.dev/
+
+The frontend is hosted on Cloudflare Pages Free, connected to AWS Lambda in Mumbai and the existing Gemini and FalkorDB services. A shared daily planning limit helps control usage. See [AWS deployment and budget notes](AWS-DEPLOYMENT.md).
+
 ## Run locally
 
 Requires Node.js 22.9+ and a reachable FalkorDB instance.
@@ -21,11 +27,12 @@ Requires Node.js 22.9+ and a reachable FalkorDB instance.
 - Project briefs saved on the device, smooth native-input caret movement and responsive layouts.
 - Gemini chooses resource-search tools and uses graph results to produce production steps, costs, assumptions and unresolved needs.
 - Direct resource searches with date, quantity, purpose and budget constraints, connected alternatives and equipment dependency checks.
+- Fashion plans display graph-verified making methods and the resources that meet each need. Booked tools and forbidden alterations appear in the evidence.
 - Expand **Why these choices?** to see the actual tool trace and resource paths.
 
 ## Why FalkorDB is central
 
-FalkorDB stores resources, creative uses, owning clubs, materials, bookings and equipment requirements. Searches follow connected uses to find suitable resources and alternatives. A camera body is rejected as an available kit when its required lens is booked. The backend calculates stock throughout the requested dates and verifies the combined plan cost. If the graph is unavailable, inventory queries fail instead of substituting a hard-coded answer.
+FalkorDB stores 35 fictional resources, creative uses, owning clubs, materials, five bookings, three equipment dependencies and seven making techniques. Technique paths connect mandatory needs to alternative resources and enforce cut/dye permissions. Fashion planning starts by inspecting these methods and verifies that selected supplies cover every required need. Searches follow connected uses to find suitable resources and alternatives. A camera body is rejected as an available kit when its required lens is booked. The backend calculates stock throughout the requested dates and verifies the combined plan cost. If the graph is unavailable, inventory queries fail instead of substituting a hard-coded answer.
 
 See [the graph data model](backend/GRAPH-MODEL.md), [the Cypher search queries](backend/search.mjs), and [backend setup and API details](backend/README.md).
 
@@ -42,7 +49,8 @@ Run from the backend folder:
 ```text
 npm test                  # deterministic stock and plan-validation tests
 npm run check:db          # read-only database connection check
-npm run check:inventory   # live resource, alternative and dependency checks
+npm run check:inventory   # live resource, alternative and technique checks
+npm run check:fashion     # live Gemini plan with graph-blocked machine sewing
 npm run check:ai          # small Gemini generation check; consumes quota
 npm run check:planner     # live Gemini + FalkorDB workflow; consumes quota
 ```
@@ -61,4 +69,4 @@ Local recordings, the offline visual reference and archived design experiments b
 
 ## Prototype scope
 
-Inventory, clubs and bookings are fictional. Profiles and briefs are stored in the browser; there is no production authentication, cloud project storage, persistent graph-based agent memory or real borrowing transaction. Plans check availability but do not reserve resources. Resource totals exclude unpriced needs such as travel, consumables and externally sourced embellishments. The backend sends the brief and relevant fictional inventory to Gemini, without the local profile. This is currently a local demo; a fresh checkout can run using the instructions above.
+Inventory, clubs and bookings are fictional. Profiles and briefs are stored in the browser; there is no production authentication, cloud project storage, persistent graph-based agent memory or real borrowing transaction. Plans check availability but do not reserve resources. Resource totals exclude unpriced needs such as travel, consumables and externally sourced embellishments. The backend sends the brief and relevant fictional inventory to Gemini, without the local profile. The public AWS deployment is documented in [AWS-DEPLOYMENT.md](AWS-DEPLOYMENT.md); a fresh checkout can also run locally using the instructions above.

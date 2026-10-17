@@ -45,3 +45,20 @@ test('agent actually queries graph tools and retains signed model messages',asyn
   const result=await createCreativePlan(graph,brief,{generate,settings:{model:'fake-test',key:'unused'}});
   assert.equal(result.totalCost,0);assert.equal(result.trace[0].tool,'search_resources');assert.equal(queries,2);
 });
+
+test('fashion agent inspects methods first and repairs an incomplete technique selection',async()=>{
+  const fashion=parseBrief({...brief,discipline:'fashion'});
+  let turns=0;
+  const graph={async roQuery(query){
+    if(query.includes('ENABLES'))return {data:[{techniqueId:'method',techniqueName:'Hand method',outcome:'Demo',needId:'need',needName:'Cuttable cloth',operation:'cut',resourceId:'verified',resourceName:'Offcut',canCut:true,canDye:false}]};
+    return {data:query.includes('REQUIRES')?[]:[{id:'verified',name:'Offcut',totalQuantity:1,dailyCost:0,unit:'bundle',owner:'Demo',materials:['cotton'],purposeName:'Costumes',bookings:[]}]};
+  }};
+  const generate=async body=>{
+    turns++;
+    if(turns===1){assert.deepEqual(body.toolConfig.functionCallingConfig.allowedFunctionNames,['inspect_techniques']);return {content:{role:'model',parts:[{functionCall:{name:'inspect_techniques',args:{}}}]},usage:{}}}
+    if(turns===3)assert.match(body.contents.at(-1).parts[0].functionResponse.response.error,/Include an available, permitted resource/);
+    return {content:{role:'model',parts:[{functionCall:{name:'finish_plan',args:{...draft(turns===2?[]:[choice('verified')]),techniqueIds:['method']}}}]},usage:{}};
+  };
+  const result=await createCreativePlan(graph,fashion,{generate,settings:{model:'fake-test',key:'unused'}});
+  assert.equal(turns,3);assert.equal(result.techniques[0].needs[0].resourceId,'verified');
+});

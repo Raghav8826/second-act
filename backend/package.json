@@ -8,15 +8,19 @@
     "node": ">=22.9.0"
   },
   "scripts": {
+    "check:demo": "node check-demo.mjs",
+    "check:demo:ai": "node check-demo.mjs --ai",
     "check:db": "node --env-file-if-exists=.env check-connection.mjs",
     "check:ai": "node --env-file-if-exists=.env check-ai.mjs",
+    "check:fashion": "node --env-file-if-exists=.env check-fashion.mjs",
     "check:planner": "node --env-file-if-exists=.env check-planner.mjs",
     "seed": "node --env-file-if-exists=.env seed.mjs",
     "check:inventory": "node --env-file-if-exists=.env check-inventory.mjs",
     "start": "node --env-file-if-exists=.env server.mjs",
-    "test": "node --test availability.test.mjs planner.test.mjs"
+    "test": "node --test resilience.test.mjs gemini.test.mjs config.test.mjs availability.test.mjs planner.test.mjs techniques.test.mjs lambda-handler.test.mjs"
   },
   "dependencies": {
+    "@aws-sdk/client-dynamodb": "3.1152.0",
     "falkordb": "6.8.0"
   }
 }

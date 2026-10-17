@@ -8,6 +8,7 @@ import {parseSearch,InputError} from './availability.mjs';
 import {searchResources} from './search.mjs';
 import {parseBrief,createCreativePlan} from './planner.mjs';
 import {AIError} from './gemini.mjs';
+import {InventoryUnavailable} from './resilience.mjs';
 installSafeFatalHandler();
 const root=fileURLToPath(new URL('../',import.meta.url));
 const allowedFiles=new Set(['/index.html','/styles.css','/app.js','/intro.js','/intro-engine.js','/planner.js','/interactions.js']);
@@ -16,7 +17,7 @@ const mime={'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8',
 const port=Number(process.env.PORT||4318);
 if(!Number.isInteger(port)||port<1||port>65535)throw new Error('Invalid server port');
 let connection;
-try{connection=await connectDatabase();await connection.database.list()}
+try{connection=await connectDatabase({recover:true});await connection.database.list()}
 catch{console.error('Could not start the backend: check the private database settings and instance availability.');process.exit(1)}
 const {database,graph}=connection;
 let activePlans=0;
@@ -68,6 +69,7 @@ const server=http.createServer(async(req,res)=>{
   }catch(error){
     if(res.destroyed)return;
     if(error instanceof AIError)return json(res,error.status,{error:error.message},head);
+    if(error instanceof InventoryUnavailable){res.setHeader('Retry-After','5');return json(res,503,{error:error.message,retryable:true},head)}
     if(error instanceof InputError||error instanceof URIError)return json(res,400,{error:error instanceof InputError?error.message:'Invalid request address.'},head);
     console.error('A resource request could not be completed.');
     json(res,503,{error:'The shared inventory is temporarily unavailable. Please try again.'},head);

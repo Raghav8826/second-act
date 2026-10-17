@@ -2,6 +2,7 @@
 let planRequest=null;
 const money=value=>value===0?'FREE':new Intl.NumberFormat('en-IN',{style:'currency',currency:'INR',maximumFractionDigits:0}).format(value);
 function resetPlanner(){
+  $('#plan-demo').textContent=selected==='fashion'?'TRY THE PEACOCK COSTUME BRIEF ↗':'TRY A ₹500 PORTRAIT BRIEF ↗';
   if(planRequest)planRequest.abort();planRequest=null;
   $('#plan-results').hidden=true;$('#plan-results').replaceChildren();
   $('#plan-status').textContent='Your idea + available resources = a practical starting point.';
@@ -37,6 +38,9 @@ function renderPlan(plan){
     }
     root.append(cards);
   }
+  if(plan.techniques?.length){
+    planList(root,'GRAPH-VERIFIED MAKING METHODS',plan.techniques.flatMap(t=>[`${t.name}: ${t.outcome}`,...t.needs.map(n=>`${n.name}: ${n.resourceName}. ${n.path}`)]));
+  }
   const columns=document.createElement('div');columns.className='plan-columns';
   const making=document.createElement('div'),practical=document.createElement('div');
   planList(making,'YOUR PRODUCTION STEPS',plan.steps);planList(making,'MAKE USE OF WHAT YOU HAVE',plan.ownedResourceUses);
@@ -52,7 +56,7 @@ function renderPlan(plan){
   const evidence=document.createElement('details');evidence.className='plan-evidence';evidence.append(resourceText('summary','','WHY THESE CHOICES? / SEE THE RESOURCE CHECKS'));
   const entries=document.createElement('ol');
   for(const step of plan.trace){
-    const row=document.createElement('li');row.append(resourceText('strong','',`${step.tool==='find_alternatives'?'Found alternatives':'Searched resources'} / ${step.purpose}: ${step.available} available of ${step.total}`));
+    const row=document.createElement('li');row.append(resourceText('strong','',`${step.tool==='inspect_techniques'?'Checked techniques':step.tool==='find_alternatives'?'Found alternatives':'Searched resources'} / ${step.purpose}: ${step.available} available of ${step.total}`));
     for(const item of step.explanations)row.append(resourceText('p','',`${item.name}: ${item.available?'available':'unavailable'}. ${item.reason} ${item.path}`));entries.append(row);
   }
   evidence.append(entries);root.append(evidence,resourceText('p','plan-small',plan.note));root.hidden=false;
@@ -65,8 +69,9 @@ $('#generate-plan').addEventListener('click',async()=>{
   const start=$('#project-date').value,end=$('#project-end-date').value||start;
   if(end<start){$('#project-end-date').setCustomValidity('The end date must be on or after your start date.');$('#project-end-date').reportValidity();return}
   if(planRequest)planRequest.abort();const controller=new AbortController();planRequest=controller;
-  $('#generate-plan').disabled=true;$('#generate-plan').textContent='WORKING ON YOUR NEXT ACT…';$('#plan-results').hidden=true;
-  $('#plan-status').textContent='Reading your vision, checking shared resources and working around the limits. This can take a little time…';
+  $('#generate-plan').disabled=true;$('#generate-plan').textContent='WORKING ON YOUR NEXT ACT…';
+  const previousPlan=!$('#plan-results').hidden;
+  $('#plan-status').textContent=previousPlan?'Checking again. The previous plan remains below; its availability has not been refreshed yet.':'Reading your vision, checking shared resources and working around the limits. This can take a little time…';
   const values=Object.fromEntries(new FormData($('#brief-form')));
   storage.set(`second-act.brief.${selected}`,JSON.stringify({...values,discipline:selected,savedAt:new Date().toISOString()}));
   try{
@@ -74,7 +79,7 @@ $('#generate-plan').addEventListener('click',async()=>{
     if(!response.headers.get('content-type')?.includes('application/json'))throw new Error('Open SecondAct through the running backend to use the creative planner.');
     const result=await response.json();if(!response.ok)throw new Error(result.error||'The plan could not be completed.');
     if(planRequest===controller)renderPlan(result);
-  }catch(error){if(planRequest===controller&&error.name!=='AbortError')$('#plan-status').textContent=error.name==='TimeoutError'?'The planner took too long. Your brief is saved; please try again.':error.message==='Failed to fetch'?'The planner could not be reached. Check that the backend is running.':error.message}
+  }catch(error){if(planRequest===controller&&error.name!=='AbortError')$('#plan-status').textContent=(error.name==='TimeoutError'?'The planner took too long. Your brief is saved; please try again.':error.message==='Failed to fetch'?'The planner could not be reached. Check that the backend is running.':error.message)+(previousPlan?' Your previous plan remains below; its availability has not been refreshed.':'')}
   finally{if(planRequest===controller){planRequest=null;$('#generate-plan').disabled=false;$('#generate-plan').textContent='MAKE ANOTHER CREATIVE PLAN ↗'}}
 });
 $('#project-date').addEventListener('input',()=>$('#project-date').setCustomValidity(''));
@@ -87,6 +92,12 @@ $('#plan-demo').addEventListener('click',()=>{
   $('#project-vision').value='Make a cinematic portrait series with a blue fabric backdrop. If the blue fabric is booked, find an available substitute. Use one LED light if the full resource kit fits the budget. Give me a simple shoot schedule.';
   $('#project-resources').value='My phone, one friend, removable clips, a table and a room with a window.';
   $('#project-budget').value='500';$('#project-date').value='2026-10-25';$('#project-end-date').value='2026-10-27';
+  if(selected==='fashion'){
+    $('#project-title').value='Rajput Queen dress';
+    $('#project-vision').value='Indian Rajasthani period-inspired costume with a peacock motif. I want sewn appliqué detailing. If the sewing machine is booked, find a hand-sewn alternative. Explain rejected methods and fabrics that cannot be cut.';
+    $('#project-resources').value='My own base garment and fabric, my design, and basic hand-sewing experience.';
+    $('#project-budget').value='2000';
+  }
   $('#project-date').setCustomValidity('');$('#project-end-date').setCustomValidity('');
   $('#plan-status').textContent='Example brief filled in. Click Make my creative plan to run the agent.';
 });

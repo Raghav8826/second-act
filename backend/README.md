@@ -66,7 +66,7 @@ The unit checks cover overlapping versus separate bookings, inclusive dates, can
 
 Invalid inputs return 400, unavailable inventory returns 503, and unknown routes return 404. Database queries use parameters. No arbitrary query or inventory-mutation API is exposed.
 
-See `GRAPH-MODEL.md`, `seed.mjs` and `search.mjs` for the model and concrete Cypher queries.
+See `GRAPH-MODEL.md`, `seed.mjs`, `search.mjs` and `techniques.mjs` for the model and concrete Cypher queries.
 
 Official Node.js client: https://github.com/FalkorDB/falkordb-ts
 
@@ -76,8 +76,17 @@ Add `GEMINI_API_KEY` to the private `.env`. `GEMINI_MODEL` selects the model ava
 
 `POST /api/plan` accepts `discipline`, `title`, `vision`, `resources`, `start`, optional `end` and optional `budget` (INR; zero is preserved). Briefs are limited in size, dates to 30 days, agent rounds to six, and tool calls to twelve. The local server limits concurrent generation and requests per minute. These are demo safeguards, not public authentication or a complete production abuse-control system.
 
-The Gemini function-calling loop runs entirely in `planner.mjs`. The first turn must call `search_resources`; subsequent turns may call `find_alternatives` and `finish_plan`. Every search uses the live FalkorDB graph with parameterized queries. The model has no arbitrary database query or write tool. Full model parts, including thought signatures, are retained only for the in-memory request conversation. The browser receives a concise tool trace, not hidden model reasoning.
+The Gemini function-calling loop runs entirely in `planner.mjs`. For fashion, the first turn must call `inspect_techniques`; other disciplines start with `search_resources`. The technique tool traverses mandatory needs and alternatives, checks alteration permissions and live stock, and final chosen methods must have every need covered. Subsequent turns may call `inspect_techniques`, `search_resources`, `find_alternatives` and `finish_plan`. Every search uses the live FalkorDB graph with parameterized queries. The model has no arbitrary database query or write tool. Full model parts, including thought signatures, are retained only for the in-memory request conversation. The browser receives a concise tool trace, not hidden model reasoning.
 
 `verifyPlan` accepts only observed, available resource IDs. It checks quantities, required-equipment stock, combined resource cost, and the complete budget, and counts required equipment only once if selected explicitly. Creative instructions, assumptions and gaps remain AI-generated and should be reviewed. No stock is reserved, no cloud project is saved and no personal profile is sent. Google may use free-tier inputs to improve products under its terms, so use fictional demo briefs rather than sensitive material.
 
-Run `npm run check:ai` for a small synthetic generation test and `npm run check:planner` for a live Gemini + FalkorDB photography workflow. Both consume API quota. `npm test` runs deterministic stock and planner-verification checks without any model calls. Raw provider responses and credentials are never logged.
+Run `npm run check:ai` for a small synthetic generation test and `npm run check:planner` for a live Gemini + FalkorDB photography workflow. Run `npm run check:fashion` for a live peacock-appliqué plan that must work around booked sewing equipment. These model checks consume API quota. `npm test` runs deterministic stock and planner-verification checks without any model calls. Raw provider responses and credentials are never logged.
+
+The running server sends a database keepalive every 30 seconds and reconnects after socket interruptions, with retry delays capped at five seconds. Requests during an outage fail instead of replaying queued commands. One-off connection and seed checks remain fail-fast. Graph data is never replaced with fallback inventory.
+
+Before demonstrating: start the backend, then run `npm run check:demo` to check all served assets, all four inventory searches and blocked private files. `npm run check:demo:ai` additionally generates four live plans and consumes Gemini quota. Use it once before judging, not in a polling loop. Read-only graph requests wait briefly for reconnect, retry one transport failure and time out instead of hanging. Gemini retries one network or temporary server failure; quota/authentication errors do not loop. Prior results remain visible during refresh and are explicitly marked as not refreshed on failure. Actual cloud outages or exhausted provider quota can still prevent new results. Public judges need a reachable hosted backend; localhost is only available on the host computer. The deployed Lambda backend runs on demand.
+
+
+## AWS Lambda
+
+The public deployment uses `lambda-handler.mjs` to serve the same frontend, graph queries and Gemini planner through an HTTPS Function URL. `lambda-usage.mjs` enforces a shared daily planning limit with an atomic DynamoDB counter. Local preview still uses `server.mjs`. See [AWS deployment and budget notes](../AWS-DEPLOYMENT.md).

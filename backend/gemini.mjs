@@ -1,3 +1,4 @@
+import {setTimeout as sleep} from 'node:timers/promises';
 export class AIError extends Error {
   constructor(message,status=503){super(message);this.status=status}
 }
@@ -9,14 +10,24 @@ export function aiSettings(env=process.env){
   return {key,model};
 }
 // Keep the credential in an HTTP header, never a URL, browser response or log.
-export async function generateContent(body,{signal,settings=aiSettings()}={}){
+export async function generateContent(body,{signal,settings=aiSettings(),fetcher=fetch,pause=sleep}={}){
   let response;
+  const delay=async()=>{try{await pause(600,undefined,{signal})}catch{throw new AIError('Planning was cancelled.')}};
+  for(let attempt=0;attempt<2;attempt++){
   try{
-    response=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${settings.model}:generateContent`,{
+    if(signal?.aborted)throw new AIError('Planning was cancelled.');
+    response=await fetcher(`https://generativelanguage.googleapis.com/v1beta/models/${settings.model}:generateContent`,{
       method:'POST',headers:{'x-goog-api-key':settings.key,'Content-Type':'application/json'},
       body:JSON.stringify(body),signal:signal?AbortSignal.any([signal,AbortSignal.timeout(45000)]):AbortSignal.timeout(45000)
     });
-  }catch{throw new AIError('The AI service took too long to respond. Your brief is still here; please try again.')}
+  }catch{
+    if(signal?.aborted)throw new AIError('Planning was cancelled.');
+    if(attempt===0){await delay();continue}
+    throw new AIError('The AI service took too long to respond. Your brief is saved; try again.');
+  }
+  if([500,502,503,504].includes(response.status)&&attempt===0){await response.body?.cancel();await delay();continue}
+  break;
+  }
   if(!response.ok){
     if(response.status===429)throw new AIError('The Gemini quota is temporarily exhausted. Wait and try again; enabling billing is optional.',429);
     if([401,403].includes(response.status))throw new AIError('Gemini rejected access. Check the key and project permissions in AI Studio.');
