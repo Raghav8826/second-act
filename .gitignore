@@ -11,3 +11,6 @@ Thumbs.db
 extras/
 demo-video/
 Second Act - Visual Reference.html
+
+# Local Cloudflare tooling cache
+.wrangler/

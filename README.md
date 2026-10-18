@@ -8,6 +8,10 @@ https://secondact.pages.dev/
 
 The frontend is hosted on Cloudflare Pages Free, connected to AWS Lambda in Mumbai and the existing Gemini and FalkorDB services. A shared daily planning limit helps control usage. See [AWS deployment and budget notes](AWS-DEPLOYMENT.md).
 
+## Demo video
+
+[Watch the SecondAct project demo on YouTube](https://youtu.be/wJ3xYby5KnM).
+
 ## Run locally
 
 Requires Node.js 22.9+ and a reachable FalkorDB instance.

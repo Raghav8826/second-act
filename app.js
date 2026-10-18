@@ -251,7 +251,7 @@ function configureResourceSearch(){
     const option=document.createElement('option');option.value=value;option.textContent=label;return option;
   }));
   $('#resource-start').value=$('#project-date').value;
-  $('#resource-end').value=$('#project-date').value;
+  $('#resource-end').value=$('#project-end-date').value||$('#project-date').value;
   $('#resource-quantity').value='1';
   $('#resource-results').replaceChildren();
   $('#resource-status').textContent='Pick what you need and your dates to explore the shared inventory.';

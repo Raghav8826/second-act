@@ -135,6 +135,16 @@ $('#plan-demo').addEventListener('click',()=>{
   $('#project-vision').value='Make a cinematic portrait series with a blue fabric backdrop. If the blue fabric is booked, find an available substitute. Use one LED light if the full resource kit fits the budget. Give me a simple shoot schedule.';
   $('#project-resources').value='My phone, one friend, removable clips, a table and a room with a window.';
   $('#project-budget').value='500';$('#project-date').value='2026-10-25';$('#project-end-date').value='2026-10-27';
+  if(selected==='filmmaker'){
+    $('#project-title').value='One room, one story';
+    $('#project-vision').value='Make a short film set in one room using my phone and available shared resources. Use a reusable fabric backdrop and simple lighting. If the blue fabric is booked, find an available substitute. Give me a practical shooting schedule within the budget.';
+  }
+  if(selected==='theatre'){
+    $('#project-title').value='A stage from what we have';
+    $('#project-vision').value='Create a small indoor theatre scene using reusable fabric scenery and simple stage lighting. If the blue fabric is booked, find an available substitute. Explain how to assemble and remove the set without permanently altering borrowed materials.';
+    $('#project-resources').value='Two performers, our script, removable clips, a table and a small rehearsal room.';
+    $('#project-budget').value='1500';
+  }
   if(selected==='fashion'){
     $('#project-title').value='Rajput Queen dress';
     $('#project-vision').value='Indian Rajasthani period-inspired costume with a peacock motif. I want sewn appliqué detailing. If the sewing machine is booked, find a hand-sewn alternative. Explain rejected methods and fabrics that cannot be cut.';
@@ -142,6 +152,7 @@ $('#plan-demo').addEventListener('click',()=>{
     $('#project-budget').value='2000';
   }
   $('#project-date').setCustomValidity('');$('#project-end-date').setCustomValidity('');
+  configureResourceSearch();
   $('#plan-demo').classList.add('is-filled');
   saveBriefDraft();
   $('#plan-status').textContent='Demo brief filled in. Click Make my creative plan to run the agent.';
