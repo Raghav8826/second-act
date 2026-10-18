@@ -23,20 +23,27 @@ Requires Node.js 22.9+ and a reachable FalkorDB instance.
 
 `GEMINI_MODEL` is configurable. The fashion demo was verified with `gemini-3.5-flash-lite`; choose a model available to your API project. Manual inventory search works without a Gemini key. Cloud connectivity and available provider quota are required for their respective services.
 
-## What works
+## What SecondAct does
 
-- Curtain-and-spotlights intro, a crash zoom through the logo, and an immediate Skip button.
-- Local profile creation with six portrait choices; edit or log out through the profile menu. Logging out restarts the intro and clears the local profile while retaining saved briefs.
-- Four creative worlds with brief click animations, compact color-matched text hover effects, keyboard shortcuts and reduced-motion support. Each visit starts without a selected world.
-- Project briefs saved on the device, smooth native-input caret movement and responsive layouts.
-- Gemini chooses resource-search tools and uses graph results to produce production steps, costs, assumptions and unresolved needs.
-- Direct resource searches with date, quantity, purpose and budget constraints, connected alternatives and equipment dependency checks.
-- Fashion plans display graph-verified making methods and the resources that meet each need. Booked tools and forbidden alterations appear in the evidence.
-- Expand **Why these choices?** to see the actual tool trace and resource paths.
+- Turns a creative brief into production steps, resource choices, inventory costs, assumptions and unresolved needs. Gemini chooses tools and uses live FalkorDB results to build the plan.
+- Finds resources and alternatives by purpose, dates, quantity and budget, including required-equipment checks.
+- Explains recommendations through **Why these choices?**, with the actual tool trace and graph paths.
+- Checks fashion making methods against their required supplies, booked tools and cutting or dyeing permissions.
+- Supports filmmaking, theatre, photography and fashion design, with a ready-to-use demo brief for each world.
+- Saves profiles and briefs on the device, with profile editing and logout.
+- Provides responsive layouts, keyboard shortcuts, reduced-motion support and a skippable curtain-and-spotlights intro.
 
 ## Why FalkorDB is central
 
 FalkorDB stores 35 fictional resources, creative uses, owning clubs, materials, five bookings, three equipment dependencies and seven making techniques. Technique paths connect mandatory needs to alternative resources and enforce cut/dye permissions. Fashion planning starts by inspecting these methods and verifies that selected supplies cover every required need. Searches follow connected uses to find suitable resources and alternatives. A camera body is rejected as an available kit when its required lens is booked. The backend calculates stock throughout the requested dates and verifies the combined plan cost. If the graph is unavailable, inventory queries fail instead of substituting a hard-coded answer.
+
+### Start with the backdrop example
+
+The blue backdrop fabric is booked for the project dates. SecondAct follows its shared **Backdrop** use to find teal curtains as an alternative, then checks their availability, quantity, cost and borrowing rules before recommending them.
+
+Blue backdrop fabric **—SUITABLE_FOR→** Backdrop **←SUITABLE_FOR—** Teal curtain pair.
+
+The connection explains why curtains are considered; the availability and cost checks determine whether they can be used. The inventory is fictional demo data, queried from the actual FalkorDB graph.
 
 ### Graph data model
 
@@ -70,9 +77,9 @@ See [the graph data model](backend/GRAPH-MODEL.md), [the Cypher search queries](
 
 Click a creative world to open its project page. Use **Fill with demo brief**, above the project-name input, then **Make my creative plan**. The loading overlay clears when results arrive and the page moves to the plan.
 
-**Fashion Designer:** the demo fills **Rajput Queen dress**, a peacock-inspired costume, the artist's own base garment and design, a ₹2,000 budget, and **October 25–27, 2026**. The sewing machine and embroidery hoops are booked on these dates. Inspect the hand-sewn alternatives, alteration permissions, resource bill and graph connections. AI wording and choices can vary.
-
 **Photography:** the demo fills a ₹500 portrait brief for **October 25–27, 2026**, demonstrating booked blue fabric and graph-connected backdrop alternatives. The manual **Try the backdrop demo** also exposes these availability checks without an AI call.
+
+**Fashion Designer:** the demo fills **Rajput Queen dress**, a peacock-inspired costume, the artist's own base garment and design, a ₹2,000 budget, and **October 25–27, 2026**. The sewing machine and embroidery hoops are booked on these dates. Inspect the hand-sewn alternatives, alteration permissions, resource bill and graph connections. AI wording and choices can vary.
 
 ## Validation
 
