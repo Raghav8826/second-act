@@ -73,7 +73,6 @@ function populateBrief(){
   $('#brief-art').src=`assets/${d.asset}.png`;
   $('#project-vision').placeholder=d.placeholder;
   $('#brief-form').reset();
-  $('#save-status').textContent='';
   let draft;
   try{draft=JSON.parse(storage.get(`second-act.brief.${selected}`))}catch{}
   if(draft){for(const field of ['title','vision','resources','budget','date','endDate']){
@@ -155,7 +154,15 @@ $('#profile-cancel').addEventListener('click',()=>{
   if(profile)showScreen(profileReturnScreen,{message:'BACK TO YOUR WORLD.',color:'#E52232',preserveBrief:profileReturnScreen==='brief'});
 });
 
-document.querySelectorAll('input[name="discipline"]').forEach(input=>input.addEventListener('change',()=>selectDiscipline(input.value)));
+document.querySelectorAll('input[name="discipline"]').forEach(input=>{
+  input.addEventListener('change',()=>{if(!transitioning)selectDiscipline(input.value)});
+  input.addEventListener('click',()=>{
+    if(transitioning)return;
+    if(selected!==input.value)selectDiscipline(input.value);
+    resetPlanner();
+    showScreen('brief');
+  });
+});
 $('#continue-button').addEventListener('click',()=>{if(selected)showScreen('brief')});
 $('#back-button').addEventListener('click',()=>showScreen('selection'));
 $('.wordmark').addEventListener('click',event=>{
@@ -170,12 +177,13 @@ $('.wordmark').addEventListener('click',event=>{
   resourceRequest?.abort();
   showScreen(profile?'selection':'profile',{animate:false});
 });
-$('#brief-form').addEventListener('submit',event=>{
-  event.preventDefault();
-  const values=Object.fromEntries(new FormData(event.currentTarget));
-  const saved=storage.set(`second-act.brief.${selected}`,JSON.stringify({...values,discipline:selected,savedAt:new Date().toISOString()}));
-  $('#save-status').textContent=saved?'✓ Starting point saved on this device. Come back whenever inspiration strikes.':'Your browser couldn’t save this brief. Keep this page open to retain your changes.';
-});
+function saveBriefDraft(){
+  if(!selected)return;
+  const values=Object.fromEntries(new FormData($('#brief-form')));
+  storage.set(`second-act.brief.${selected}`,JSON.stringify({...values,discipline:selected,savedAt:new Date().toISOString()}));
+}
+$('#brief-form').addEventListener('input',saveBriefDraft);
+$('#brief-form').addEventListener('submit',event=>{event.preventDefault();$('#generate-plan').click()});
 $('#profile-toggle').addEventListener('click',()=>{
   const menu=$('#profile-menu');
   menu.hidden=!menu.hidden;

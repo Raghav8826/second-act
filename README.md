@@ -38,9 +38,11 @@ See [the graph data model](backend/GRAPH-MODEL.md), [the Cypher search queries](
 
 ## Try an example
 
-**Fashion Designer:** title: Rajput Queen dress; vision: Indian Rajasthani period costumes with peacock motif.; resources: Fabric, design.; budget: ₹2,000; dates: 16–18 October 2026. Make a plan, inspect its resource checks, then search **Costumes and textiles** and **Sewing** for the same dates. AI wording and choices can vary.
+Click a creative world to open its project page. Use **Fill with demo brief**, above the project-name input, then **Make my creative plan**. The loading overlay clears when results arrive and the page moves to the plan.
 
-**Photography:** use **Try a ₹500 portrait brief**, then generate a plan. Its October 25–27 dates demonstrate booked fabric and graph-connected alternatives. The manual **Try the backdrop demo** also exposes these availability checks without an AI call.
+**Fashion Designer:** the demo fills **Rajput Queen dress**, a peacock-inspired costume, the artist's own base garment and design, a ₹2,000 budget, and **October 25–27, 2026**. The sewing machine and embroidery hoops are booked on these dates. Inspect the hand-sewn alternatives, alteration permissions, resource bill and graph connections. AI wording and choices can vary.
+
+**Photography:** the demo fills a ₹500 portrait brief for **October 25–27, 2026**, demonstrating booked blue fabric and graph-connected backdrop alternatives. The manual **Try the backdrop demo** also exposes these availability checks without an AI call.
 
 ## Validation
 

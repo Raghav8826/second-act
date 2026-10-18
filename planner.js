@@ -1,8 +1,17 @@
 'use strict';
 let planRequest=null;
+function setPlanLoading(loading){
+  $('#plan-loading').hidden=!loading;
+  $('.page-shell').classList.toggle('is-planning',loading);
+  $('#brief-form').inert=loading;
+  $('.creative-plan-panel').setAttribute('aria-busy',String(loading));
+  if(loading)$('#plan-cancel').focus({preventScroll:true});
+}
 const money=value=>value===0?'FREE':new Intl.NumberFormat('en-IN',{style:'currency',currency:'INR',maximumFractionDigits:0}).format(value);
 function resetPlanner(){
-  $('#plan-demo').textContent=selected==='fashion'?'TRY THE PEACOCK COSTUME BRIEF ↗':'TRY A ₹500 PORTRAIT BRIEF ↗';
+  $('#plan-demo').textContent='FILL WITH DEMO BRIEF ↗';
+  $('#plan-demo').classList.remove('is-filled');
+  setPlanLoading(false);
   if(planRequest)planRequest.abort();planRequest=null;
   $('#plan-results').hidden=true;$('#plan-results').replaceChildren();
   $('#plan-status').textContent='Your idea + available resources = a practical starting point.';
@@ -14,7 +23,7 @@ function planList(parent,title,items){
   section.append(resourceText('h3','plan-section-label',title));
   const list=document.createElement(title==='YOUR PRODUCTION STEPS'?'ol':'ul');
   for(const line of items)list.append(resourceText('li','',line));
-  section.append(list);parent.append(section);
+  section.append(list);parent.append(section);return section;
 }
 function renderPlan(plan){
   const root=$('#plan-results');root.replaceChildren();
@@ -38,12 +47,27 @@ function renderPlan(plan){
     }
     root.append(cards);
   }
+  const overview=document.createElement('section');overview.className='plan-overview';overview.setAttribute('aria-label','Your making plan overview');
   if(plan.techniques?.length){
-    planList(root,'GRAPH-VERIFIED MAKING METHODS',plan.techniques.flatMap(t=>[`${t.name}: ${t.outcome}`,...t.needs.map(n=>`${n.name}: ${n.resourceName}. ${n.path}`)]));
+    const methods=document.createElement('section');methods.className='plan-methods';
+    methods.append(resourceText('h3','plan-section-label','GRAPH-VERIFIED MAKING METHODS'));
+    for(const technique of plan.techniques){
+      const method=document.createElement('article');method.className='making-method';
+      const highlight=document.createElement('div');highlight.className='making-highlight';
+      highlight.append(resourceText('span','making-eyebrow','WHAT WE’RE MAKING'),resourceText('h4','making-name',technique.name),resourceText('p','making-outcome',technique.outcome));
+      method.append(highlight);
+      const needs=document.createElement('ul');needs.className='making-needs';
+      for(const need of technique.needs){
+        const row=document.createElement('li');row.append(resourceText('span','making-need-name',need.name),resourceText('strong','making-resource-name',need.resourceName));needs.append(row);
+      }
+      method.append(needs);
+      const paths=document.createElement('details');paths.className='making-paths';paths.append(resourceText('summary','','VIEW GRAPH CONNECTIONS'));
+      const list=document.createElement('ul');for(const need of technique.needs)list.append(resourceText('li','',need.path));paths.append(list);method.append(paths);methods.append(method);
+    }
+    overview.append(methods);
   }
   const columns=document.createElement('div');columns.className='plan-columns';
-  const making=document.createElement('div'),practical=document.createElement('div');
-  planList(making,'YOUR PRODUCTION STEPS',plan.steps);planList(making,'MAKE USE OF WHAT YOU HAVE',plan.ownedResourceUses);
+  const steps=planList(columns,'YOUR PRODUCTION STEPS',plan.steps);if(steps)steps.classList.add('plan-steps');
   const costSection=document.createElement('section');costSection.className='plan-text-section';costSection.append(resourceText('h3','plan-section-label','THE RESOURCE BILL'));
   if(plan.costItems.length){
     const list=document.createElement('ul');list.className='plan-cost-list';
@@ -51,16 +75,21 @@ function renderPlan(plan){
     costSection.append(list);
   }else costSection.append(resourceText('p','','No shared resources selected.'));
   costSection.append(resourceText('p','plan-small','Totals cover your full date range. Required equipment is counted once. Other project expenses are not priced.'));
-  practical.append(costSection);planList(practical,'CHECK THESE ASSUMPTIONS',plan.assumptions);planList(practical,'STILL TO SORT OUT',plan.gaps);
-  columns.append(making,practical);root.append(columns);
+  costSection.classList.add('plan-bill');columns.append(costSection);
+  const owned=planList(columns,'MAKE USE OF WHAT YOU HAVE',plan.ownedResourceUses);if(owned)owned.classList.add('plan-owned');
+  const assumptions=planList(columns,'CHECK THESE ASSUMPTIONS',plan.assumptions);if(assumptions)assumptions.classList.add('plan-assumptions');
+  const gaps=planList(columns,'STILL TO SORT OUT',plan.gaps);if(gaps)gaps.classList.add('plan-gaps');
+  overview.append(columns);root.append(overview);
   const evidence=document.createElement('details');evidence.className='plan-evidence';evidence.append(resourceText('summary','','WHY THESE CHOICES? / SEE THE RESOURCE CHECKS'));
   const entries=document.createElement('ol');
   for(const step of plan.trace){
     const row=document.createElement('li');row.append(resourceText('strong','',`${step.tool==='inspect_techniques'?'Checked techniques':step.tool==='find_alternatives'?'Found alternatives':'Searched resources'} / ${step.purpose}: ${step.available} available of ${step.total}`));
     for(const item of step.explanations)row.append(resourceText('p','',`${item.name}: ${item.available?'available':'unavailable'}. ${item.reason} ${item.path}`));entries.append(row);
   }
-  evidence.append(entries);root.append(evidence,resourceText('p','plan-small',plan.note));root.hidden=false;
+  evidence.append(entries);root.append(evidence);root.hidden=false;
   $('#plan-status').textContent='Your plan is ready. Resource totals and availability have been checked.';
+  const resultHeading=root.querySelector('h2');
+  resultHeading.tabIndex=-1;resultHeading.focus({preventScroll:true});
   root.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'});
 }
 $('#generate-plan').addEventListener('click',async()=>{
@@ -74,13 +103,27 @@ $('#generate-plan').addEventListener('click',async()=>{
   $('#plan-status').textContent=previousPlan?'Checking again. The previous plan remains below; its availability has not been refreshed yet.':'Reading your vision, checking shared resources and working around the limits. This can take a little time…';
   const values=Object.fromEntries(new FormData($('#brief-form')));
   storage.set(`second-act.brief.${selected}`,JSON.stringify({...values,discipline:selected,savedAt:new Date().toISOString()}));
+  setPlanLoading(true);
   try{
     const response=await fetch('/api/plan',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({discipline:selected,title:values.title,vision:values.vision,resources:values.resources,start,end,budget:values.budget}),signal:AbortSignal.any([controller.signal,AbortSignal.timeout(155000)])});
     if(!response.headers.get('content-type')?.includes('application/json'))throw new Error('Open SecondAct through the running backend to use the creative planner.');
     const result=await response.json();if(!response.ok)throw new Error(result.error||'The plan could not be completed.');
-    if(planRequest===controller)renderPlan(result);
-  }catch(error){if(planRequest===controller&&error.name!=='AbortError')$('#plan-status').textContent=(error.name==='TimeoutError'?'The planner took too long. Your brief is saved; please try again.':error.message==='Failed to fetch'?'The planner could not be reached. Check that the backend is running.':error.message)+(previousPlan?' Your previous plan remains below; its availability has not been refreshed.':'')}
-  finally{if(planRequest===controller){planRequest=null;$('#generate-plan').disabled=false;$('#generate-plan').textContent='MAKE ANOTHER CREATIVE PLAN ↗'}}
+    if(planRequest===controller){setPlanLoading(false);renderPlan(result)}
+  }catch(error){
+    if(planRequest===controller&&error.name!=='AbortError'){
+      setPlanLoading(false);
+      $('#plan-status').textContent=(error.name==='TimeoutError'?'The planner took too long. Your brief is saved; please try again.':error.message==='Failed to fetch'?'The planner could not be reached. Check your connection and try again.':error.message)+(previousPlan?' Your previous plan remains below; its availability has not been refreshed.':'');
+      $('#plan-status').tabIndex=-1;$('#plan-status').focus({preventScroll:true});
+      $('#plan-status').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'center'});
+    }
+  }
+  finally{if(planRequest===controller){setPlanLoading(false);planRequest=null;$('#generate-plan').disabled=false;$('#generate-plan').textContent='MAKE ANOTHER CREATIVE PLAN ↗'}}
+});
+$('#plan-cancel').addEventListener('click',()=>{
+  const pending=planRequest;planRequest=null;pending?.abort();setPlanLoading(false);
+  $('#generate-plan').disabled=false;$('#generate-plan').textContent='MAKE MY CREATIVE PLAN ↗';
+  $('#plan-status').textContent='Planning stopped. Your brief is still here.';
+  $('#generate-plan').focus({preventScroll:true});
 });
 $('#project-date').addEventListener('input',()=>$('#project-date').setCustomValidity(''));
 $('#project-end-date').addEventListener('input',()=>$('#project-end-date').setCustomValidity(''));
@@ -99,5 +142,7 @@ $('#plan-demo').addEventListener('click',()=>{
     $('#project-budget').value='2000';
   }
   $('#project-date').setCustomValidity('');$('#project-end-date').setCustomValidity('');
-  $('#plan-status').textContent='Example brief filled in. Click Make my creative plan to run the agent.';
+  $('#plan-demo').classList.add('is-filled');
+  saveBriefDraft();
+  $('#plan-status').textContent='Demo brief filled in. Click Make my creative plan to run the agent.';
 });
