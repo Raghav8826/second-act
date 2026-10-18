@@ -42,18 +42,21 @@ FalkorDB stores 35 fictional resources, creative uses, owning clubs, materials, 
 
 Nodes represent creative disciplines, making techniques, requirements, resources, uses, materials, clubs and bookings. The named edges below are the relationships queried by the backend.
 
-```mermaid
-graph LR
-  Discipline -->|USES| Use
-  Resource -->|SUITABLE_FOR| Use
-  Club -->|OWNS| Resource
-  Resource -->|MADE_OF| Material
-  Booking -->|RESERVES| Resource
-  Resource -->|REQUIRES| RequiredResource[Resource]
-  Discipline -->|ENABLES| Technique
-  Technique -->|NEEDS| Need
-  Need -->|ACCEPTS| Resource
-```
+![Actual SecondAct FalkorDB graph with 99 nodes and 218 relationships](docs/images/falkordb-graph.png)
+
+**Actual FalkorDB graph — fictional demo inventory.** Extracted from our FalkorDB Browser recording, showing 99 nodes and 218 relationships in 2D. Browser tabs, the address bar and connection details have been cropped out.
+
+| From | Relationship | To |
+| --- | --- | --- |
+| Discipline | USES | Use |
+| Resource | SUITABLE_FOR | Use |
+| Club | OWNS | Resource |
+| Resource | MADE_OF | Material |
+| Booking | RESERVES | Resource |
+| Resource | REQUIRES | Resource |
+| Discipline | ENABLES | Technique |
+| Technique | NEEDS | Need |
+| Need | ACCEPTS | Resource |
 
 **A real path in the fashion demo:**
 
