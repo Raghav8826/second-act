@@ -109,3 +109,7 @@ Local recordings, the offline visual reference and archived design experiments b
 ## Prototype scope
 
 Inventory, clubs and bookings are fictional. Profiles and briefs are stored in the browser; there is no production authentication, cloud project storage, persistent graph-based agent memory or real borrowing transaction. Plans check availability but do not reserve resources. Resource totals exclude unpriced needs such as travel, consumables and externally sourced embellishments. The backend sends the brief and relevant fictional inventory to Gemini, without the local profile. The public AWS deployment is documented in [AWS-DEPLOYMENT.md](AWS-DEPLOYMENT.md); a fresh checkout can also run locally using the instructions above.
+
+## AI assistance
+
+OpenAI Codex helped with implementation, debugging and testing. Product direction, visual references and demo choices were provided by the participant. Gemini powers the application's runtime creative planning.
