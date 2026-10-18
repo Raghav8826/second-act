@@ -34,6 +34,29 @@ Requires Node.js 22.9+ and a reachable FalkorDB instance.
 
 FalkorDB stores 35 fictional resources, creative uses, owning clubs, materials, five bookings, three equipment dependencies and seven making techniques. Technique paths connect mandatory needs to alternative resources and enforce cut/dye permissions. Fashion planning starts by inspecting these methods and verifies that selected supplies cover every required need. Searches follow connected uses to find suitable resources and alternatives. A camera body is rejected as an available kit when its required lens is booked. The backend calculates stock throughout the requested dates and verifies the combined plan cost. If the graph is unavailable, inventory queries fail instead of substituting a hard-coded answer.
 
+### Graph data model
+
+Nodes represent creative disciplines, making techniques, requirements, resources, uses, materials, clubs and bookings. The named edges below are the relationships queried by the backend.
+
+```mermaid
+graph LR
+  Discipline -->|USES| Use
+  Resource -->|SUITABLE_FOR| Use
+  Club -->|OWNS| Resource
+  Resource -->|MADE_OF| Material
+  Booking -->|RESERVES| Resource
+  Resource -->|REQUIRES| RequiredResource[Resource]
+  Discipline -->|ENABLES| Technique
+  Technique -->|NEEDS| Need
+  Need -->|ACCEPTS| Resource
+```
+
+**A real path in the fashion demo:**
+
+Fashion design **—ENABLES→** Hand-sewn peacock appliqué **—NEEDS→** Cuttable motif fabric **—ACCEPTS→** Teal peacock-motif offcuts.
+
+For October 25–27, 2026, the demo sewing machine is booked, so machine sewing is rejected. Borrowed fabric without cutting permission is also rejected for a cuttable motif. The hand-sewn method and permitted teal offcuts remain usable options. Gemini builds its plan from these checked graph results; the backend also validates stock, required equipment and the combined resource cost.
+
 See [the graph data model](backend/GRAPH-MODEL.md), [the Cypher search queries](backend/search.mjs), and [backend setup and API details](backend/README.md).
 
 ## Try an example
